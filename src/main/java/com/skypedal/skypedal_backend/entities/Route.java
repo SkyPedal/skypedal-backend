@@ -1,5 +1,6 @@
 package com.skypedal.skypedal_backend.entities;
 
+import com.skypedal.skypedal_backend.dto.RouteDTO;
 import jakarta.persistence.*;
 
 @Entity
@@ -32,6 +33,15 @@ public class Route {
         this.geoJson = geoJson;
         this.distanceM = distanceM;
         this.durationS = durationS;
+    }
+
+    public Route(RouteDTO routeDTO, Location start, Location end, User user) {
+        this.start = start;
+        this.end = end;
+        this.user = user;
+        this.geoJson = routeDTO.getGeoJson();
+        this.distanceM = routeDTO.getDistanceM();
+        this.durationS = routeDTO.getDurationS();
     }
 
     public Integer getId() {
