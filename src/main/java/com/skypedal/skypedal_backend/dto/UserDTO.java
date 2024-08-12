@@ -44,4 +44,12 @@ public class UserDTO {
     public void setName(String name) {
         this.name = name;
     }
+
+    public List<UsersRewardsDTO> getUsersRewards() {
+        return usersRewards;
+    }
+
+    public void setUsersRewards(List<UsersRewardsDTO> usersRewards) {
+        this.usersRewards = usersRewards;
+    }
 }

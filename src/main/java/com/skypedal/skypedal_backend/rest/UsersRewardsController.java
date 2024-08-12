@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import com.skypedal.skypedal_backend.services.UsersRewardsService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users_rewards")
 public class UsersRewardsController {
@@ -24,5 +26,10 @@ public class UsersRewardsController {
     @GetMapping("/{id}")
     public UsersRewardsDTO getUserReward(@PathVariable int id) {
         return this.service.getUserReward(id);
+    }
+
+    @GetMapping("/get/{userId}")
+    public List<UsersRewardsDTO> getUserRewardsByUserId(@PathVariable int userId) {
+        return this.service.getUserRewardsByUserId(userId);
     }
 }

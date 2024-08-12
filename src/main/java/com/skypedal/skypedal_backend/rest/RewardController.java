@@ -32,4 +32,21 @@ public class RewardController {
     public List<RewardDTO> getRewards() {
         return this.service.getRewards();
     }
+
+    @GetMapping("/getActive")
+    public List<RewardDTO> getAvailableRewards() {
+        return this.service.getAvailableRewards();
+    }
+
+    @PatchMapping("/update/{id}")
+    public RewardDTO updateReward(@PathVariable int id,
+                                  @RequestParam(required = false) String name,
+                                  @RequestParam(required = false) String description,
+                                  @RequestParam(required = false) Integer pointCost,
+                                  @RequestParam(required = false) Integer numberAvailable,
+                                  @RequestParam(required = false) String imageLink,
+                                  @RequestParam(required = false) Boolean active) {
+
+        return this.service.updateReward(id, name, description, pointCost, numberAvailable, imageLink, active);
+    }
 }

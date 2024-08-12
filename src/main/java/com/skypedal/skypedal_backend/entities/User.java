@@ -17,7 +17,7 @@ public class User {
     private List<UsersRewards> usersRewards;
 
     public User() {
-
+        super();
     }
 
     public User(Integer id, String name) {
