@@ -16,9 +16,9 @@ public class UsersRewards {
     private String dateExpiry;
     private boolean hasUsed;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Reward reward;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private User user;
 
     public UsersRewards() {
@@ -38,13 +38,14 @@ public class UsersRewards {
         this.dateExpiry = newUserReward.getDateExpiry();
         this.hasUsed = newUserReward.isHasUsed();
 
-        if (newUserReward.getRewardId() != null) {
-            this.reward = new Reward();
-            this.reward.setId(newUserReward.getRewardId());
-        }
+
         if (newUserReward.getUserId() != null) {
             this.user = new User();
             this.user.setId(newUserReward.getUserId());
+        }
+        if (newUserReward.getRewardId() != null) {
+            this.reward = new Reward();
+            this.reward.setId(newUserReward.getRewardId());
         }
     }
 

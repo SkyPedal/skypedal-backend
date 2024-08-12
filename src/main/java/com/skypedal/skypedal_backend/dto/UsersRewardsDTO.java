@@ -33,7 +33,7 @@ public class UsersRewardsDTO {
         this.hasUsed = usersRewards.isHasUsed();
 
         if (usersRewards.getReward() != null) this.rewardId = usersRewards.getReward().getId();
-        if (usersRewards.getUser() != null) this.rewardId = usersRewards.getUser().getId();
+        if (usersRewards.getUser() != null) this.userId = usersRewards.getUser().getId();
     }
 
     public Integer getId() {

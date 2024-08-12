@@ -23,7 +23,6 @@ public class UsersRewardsService {
         return new UsersRewardsDTO(toSave);
     }
 
-    // TO DO: USER_REWARDS ARE NOT LINKED TO THE REWARDS LIST!!!!!!
     public UsersRewardsDTO getUserReward(int id) {
         UsersRewards found = this.repo.findById(id).orElseThrow(UsersRewardsNotFoundException::new);
         return new UsersRewardsDTO(found);
