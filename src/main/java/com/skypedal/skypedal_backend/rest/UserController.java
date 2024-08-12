@@ -1,9 +1,13 @@
 package com.skypedal.skypedal_backend.rest;
 
 import com.skypedal.skypedal_backend.dto.UserDTO;
+import com.skypedal.skypedal_backend.entities.User;
 import com.skypedal.skypedal_backend.services.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -18,6 +22,16 @@ public class UserController {
     @PostMapping("/")
     public UserDTO create(@RequestBody UserDTO user) {
         return this.service.add(user);
+    }
+
+    @GetMapping("/getAll")
+    public List<UserDTO> getAll() {
+        return this.service.getAll();
+    }
+
+    @PostMapping("/register")
+    public UserDTO registerUser(@RequestBody @Validated UserDTO user) {
+        return this.service.registerUser(user);
     }
 
 }

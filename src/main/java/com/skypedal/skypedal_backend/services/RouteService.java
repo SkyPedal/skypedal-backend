@@ -5,7 +5,7 @@ import com.skypedal.skypedal_backend.dto.NewRouteDTO;
 import com.skypedal.skypedal_backend.dto.RouteDTO;
 import com.skypedal.skypedal_backend.entities.Location;
 import com.skypedal.skypedal_backend.entities.Route;
-import com.skypedal.skypedal_backend.entities.MyUser;
+import com.skypedal.skypedal_backend.entities.User;
 import com.skypedal.skypedal_backend.exceptions.LocationNotFoundException;
 import com.skypedal.skypedal_backend.exceptions.NoRouteFoundException;
 import com.skypedal.skypedal_backend.exceptions.UserNotFoundException;
@@ -30,7 +30,7 @@ public class RouteService {
 
     public RouteDTO add(NewRouteDTO route, Integer userId) {
         // Call the maps API
-        MyUser myUser = this.userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+        User user = this.userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         Location startLocation = this.locationRepo.findById(route.getStartId()).orElseThrow(LocationNotFoundException::new);
         Location endLocation =
                 this.locationRepo.findById(route.getEndId()).orElseThrow(LocationNotFoundException::new);
@@ -39,7 +39,7 @@ public class RouteService {
         String geoJson = null;
         Integer distanceM = null;
         Integer durationS = null;
-        Route createdRoute = this.repo.save(new Route(newRoute, startLocation, endLocation, myUser));
+        Route createdRoute = this.repo.save(new Route(newRoute, startLocation, endLocation, user));
         return new RouteDTO(createdRoute);
     }
 }

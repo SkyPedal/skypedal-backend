@@ -10,16 +10,16 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @ManyToOne
-    private MyUser myUser;
+    private User user;
     private String name;
     private Double lat;
     private Double lng;
 
     public Location() {}
 
-    public Location(LocationDTO locationDTO, MyUser myUser) {
+    public Location(LocationDTO locationDTO, User user) {
         this.id = locationDTO.getId();
-        this.myUser = myUser;
+        this.user = user;
         this.name = locationDTO.getName();
         this.lat = locationDTO.getLat();
         this.lng = locationDTO.getLng();
@@ -33,12 +33,12 @@ public class Location {
         this.id = id;
     }
 
-    public MyUser getUser() {
-        return myUser;
+    public User getUser() {
+        return user;
     }
 
-    public void setUser(MyUser myUser) {
-        this.myUser = myUser;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getName() {
