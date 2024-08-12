@@ -29,8 +29,15 @@ public class UsersRewardsService {
         this.repo.save(toSave);
 
         /* there is now one less available reward remaining */
-        Integer numbAvail = rewardService.getReward(toSave.getId()).getNumberAvailable();
-        rewardService.updateReward(toSave.getId(), null, null, null, numbAvail - 1, null, null);
+        System.out.println("saved successfully: " + toSave + "; with id: " + toSave.getReward().getId());
+        Integer numbAvail = rewardService.getReward(toSave.getReward().getId()).getNumberAvailable();
+        System.out.println("numb available: " + numbAvail);
+
+
+
+
+        /* THIS LINE DOES NOT UPDATE THE REWARD, WHY???? */
+        rewardService.updateReward(toSave.getReward().getId(), null, null, null, numbAvail - 1, null, null);
 
         return new UsersRewardsDTO(toSave);
     }
