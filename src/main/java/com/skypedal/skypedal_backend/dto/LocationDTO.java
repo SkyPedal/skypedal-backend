@@ -9,7 +9,8 @@ public class LocationDTO {
     private Double lat;
     private Double lng;
 
-    public LocationDTO(String name, Double lat, Double lng) {
+    public LocationDTO(Integer id, String name, Double lat, Double lng) {
+        this.id = id;
         this.name = name;
         this.lat = lat;
         this.lng = lng;

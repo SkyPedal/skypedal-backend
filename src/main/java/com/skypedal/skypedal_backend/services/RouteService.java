@@ -6,13 +6,13 @@ import com.skypedal.skypedal_backend.dto.RouteDTO;
 import com.skypedal.skypedal_backend.entities.Location;
 import com.skypedal.skypedal_backend.entities.Route;
 import com.skypedal.skypedal_backend.entities.User;
-import com.skypedal.skypedal_backend.exceptions.LocationNotFoundException;
-import com.skypedal.skypedal_backend.exceptions.NoRouteFoundException;
-import com.skypedal.skypedal_backend.exceptions.UserNotFoundException;
+import com.skypedal.skypedal_backend.exceptions.*;
 import com.skypedal.skypedal_backend.repo.LocationRepo;
 import com.skypedal.skypedal_backend.repo.RouteRepo;
 import com.skypedal.skypedal_backend.repo.UserRepo;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class RouteService {
@@ -36,10 +36,30 @@ public class RouteService {
                 this.locationRepo.findById(route.getEndId()).orElseThrow(LocationNotFoundException::new);
         RouteDTO newRoute = this.mapsAPIService.fetchRoute(new LocationDTO(startLocation), new LocationDTO(endLocation)).block();
         if (newRoute == null) throw new NoRouteFoundException();
-        String geoJson = null;
-        Integer distanceM = null;
-        Integer durationS = null;
+
         Route createdRoute = this.repo.save(new Route(newRoute, startLocation, endLocation, user));
         return new RouteDTO(createdRoute);
+    }
+
+    public List<RouteDTO> get(Integer userId) {
+        User user = this.userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+        List<Route> routes = this.repo.findByUserId(userId);
+        return routes.stream().map(RouteDTO::new).toList();
+    }
+
+    public RouteDTO getById(Integer routeId, Integer userId) {
+        User user = this.userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+        Route route = this.repo.findById(routeId).orElseThrow(RouteNotFoundException::new);
+        if (route.getUser() != user) throw new UnauthenticatedUserException(); //TODO: Or is admin
+        return new RouteDTO(route);
+    }
+
+    public RouteDTO removeById(Integer routeId, Integer userId) {
+        User user = this.userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+        Route route = this.repo.findById(routeId).orElseThrow(RouteNotFoundException::new);
+        if (route.getUser() != user) throw new UnauthenticatedUserException(); //TODO: Or is admin
+        this.repo.deleteById(routeId);
+        return new RouteDTO(route);
+
     }
 }

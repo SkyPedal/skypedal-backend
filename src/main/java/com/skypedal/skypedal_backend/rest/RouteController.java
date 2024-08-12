@@ -6,6 +6,8 @@ import com.skypedal.skypedal_backend.services.RouteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/routes")
 public class RouteController {
@@ -19,5 +21,20 @@ public class RouteController {
     @ResponseStatus(HttpStatus.CREATED)
     public RouteDTO create(@RequestBody NewRouteDTO route, @RequestParam Integer userId) {
         return this.service.add(route, userId);
+    }
+
+    @GetMapping("")
+    public List<RouteDTO> getAll(@RequestParam Integer userId) {
+        return this.service.get(userId);
+    }
+
+    @GetMapping("/{id}")
+    public RouteDTO get(@PathVariable Integer id, @RequestParam Integer userId) {
+        return this.service.getById(id, userId);
+    }
+
+    @DeleteMapping("/{id}")
+    public RouteDTO delete(@PathVariable Integer id, @RequestParam Integer userId) {
+        return this.service.removeById(id, userId);
     }
 }

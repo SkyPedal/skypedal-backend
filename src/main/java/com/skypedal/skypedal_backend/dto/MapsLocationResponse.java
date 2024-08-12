@@ -103,7 +103,7 @@ public class MapsLocationResponse {
     public LocationDTO toLocationDTO() {
         if (this.places.isEmpty()) return null;
         GMPlace place = this.places.getFirst();
-        return new LocationDTO(place.getDisplayName().getText(), place.location.getLatitude(), place.location.getLongitude());
+        return new LocationDTO(null, place.getDisplayName().getText(), place.location.getLatitude(), place.location.getLongitude());
     }
 
     public void setPlaces(List<GMPlace> places) {

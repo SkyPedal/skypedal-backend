@@ -201,7 +201,7 @@ public class MapsRouteRequest {
     }
 
     private static void main(String[] args) throws JsonProcessingException {
-        MapsRouteRequest mrr = new MapsRouteRequest(new LocationDTO("blah",12.1,14.1), new LocationDTO("bleh", 15.1,
+        MapsRouteRequest mrr = new MapsRouteRequest(new LocationDTO(null, "blah",12.1,14.1), new LocationDTO(null, "bleh", 15.1,
                 16.1));
         ObjectMapper objectMapper = new ObjectMapper();
         System.out.println(objectMapper.writeValueAsString(mrr));

@@ -9,4 +9,4 @@ VALUES
 INSERT INTO `routes` (`start_id`,`end_id`,`user_id`,`geo_json`,`distance_m`,`duration_s`)
 VALUES
 (1,2,1,NULL,3400,1200),
-(2,1,1,NULL,3500,1300);
+(2,1,2,NULL,3500,1300);
