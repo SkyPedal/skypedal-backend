@@ -1,21 +1,21 @@
 package com.skypedal.skypedal_backend.dto;
 
-import com.skypedal.skypedal_backend.entities.User;
+import com.skypedal.skypedal_backend.entities.MyUser;
 
 public class UserDTO {
-    private Integer id;
+    private Long id;
     private String name;
 
-    public UserDTO(User user) {
-        this.id = user.getId();
-        this.name = user.getName();
+    public UserDTO(MyUser myUser) {
+        this.id = myUser.getId();
+        this.name = myUser.getName();
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

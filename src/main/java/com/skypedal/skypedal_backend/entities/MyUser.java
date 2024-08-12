@@ -5,31 +5,35 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class MyUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String name;
+    private String hash;
 
-    public User() {
+    @Column(nullable = false)
+    private String password;
+
+    public MyUser() {
 
     }
 
-    public User(Integer id, String name) {
+    public MyUser(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public User(UserDTO userDTO) {
+    public MyUser(UserDTO userDTO) {
         this.id = userDTO.getId();
         this.name = userDTO.getName();
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -39,5 +43,21 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 }

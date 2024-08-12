@@ -1,8 +1,10 @@
 package com.skypedal.skypedal_backend.repo;
 
-import com.skypedal.skypedal_backend.entities.User;
+import com.skypedal.skypedal_backend.entities.MyUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepo extends JpaRepository<User, Integer> {
+import java.util.Optional;
 
+public interface UserRepo extends JpaRepository<MyUser, Integer> {
+    Optional<MyUser> findByUsername(String userName);
 }

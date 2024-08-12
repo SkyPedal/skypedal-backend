@@ -14,7 +14,7 @@ public class Route {
     @ManyToOne
     private Location end;
     @ManyToOne
-    private User user;
+    private MyUser myUser;
 
     @Column(columnDefinition = "TEXT")
     private String geoJson;
@@ -26,19 +26,19 @@ public class Route {
     public Route() {
     }
 
-    public Route(Location start, Location end, User user, String geoJson, Integer distanceM, Integer durationS) {
+    public Route(Location start, Location end, MyUser myUser, String geoJson, Integer distanceM, Integer durationS) {
         this.start = start;
         this.end = end;
-        this.user = user;
+        this.myUser = myUser;
         this.geoJson = geoJson;
         this.distanceM = distanceM;
         this.durationS = durationS;
     }
 
-    public Route(RouteDTO routeDTO, Location start, Location end, User user) {
+    public Route(RouteDTO routeDTO, Location start, Location end, MyUser myUser) {
         this.start = start;
         this.end = end;
-        this.user = user;
+        this.myUser = myUser;
         this.geoJson = routeDTO.getGeoJson();
         this.distanceM = routeDTO.getDistanceM();
         this.durationS = routeDTO.getDurationS();
@@ -68,12 +68,12 @@ public class Route {
         this.end = end;
     }
 
-    public User getUser() {
-        return user;
+    public MyUser getUser() {
+        return myUser;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(MyUser myUser) {
+        this.myUser = myUser;
     }
 
     public String getGeoJson() {

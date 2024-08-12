@@ -1,7 +1,6 @@
 package com.skypedal.skypedal_backend.dto;
 
 import com.skypedal.skypedal_backend.entities.Location;
-import com.skypedal.skypedal_backend.entities.User;
 
 public class LocationDTO {
     private Integer id;

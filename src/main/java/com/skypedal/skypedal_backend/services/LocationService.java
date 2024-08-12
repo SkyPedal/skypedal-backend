@@ -2,7 +2,7 @@ package com.skypedal.skypedal_backend.services;
 
 import com.skypedal.skypedal_backend.dto.LocationDTO;
 import com.skypedal.skypedal_backend.entities.Location;
-import com.skypedal.skypedal_backend.entities.User;
+import com.skypedal.skypedal_backend.entities.MyUser;
 import com.skypedal.skypedal_backend.exceptions.UserNotFoundException;
 import com.skypedal.skypedal_backend.repo.LocationRepo;
 import com.skypedal.skypedal_backend.repo.UserRepo;
@@ -19,8 +19,8 @@ public class LocationService {
     }
 
     public LocationDTO add(LocationDTO locationDTO, Integer userId) {
-        User user = userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
-        Location location = this.repo.save(new Location(locationDTO, user));
+        MyUser myUser = userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+        Location location = this.repo.save(new Location(locationDTO, myUser));
         return new LocationDTO(location);
     }
 }
