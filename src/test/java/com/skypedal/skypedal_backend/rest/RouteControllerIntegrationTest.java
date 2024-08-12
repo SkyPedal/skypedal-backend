@@ -92,4 +92,19 @@ public class RouteControllerIntegrationTest {
 
         this.mvc.perform(req).andExpect(checkStatus).andExpect(checkBody);
     }
+
+    @Test
+    void testGetByEnds() throws Exception {
+        RequestBuilder req = MockMvcRequestBuilders
+                .get("/routes/start/1/end/2?userId=1")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
+        RouteDTO route = new RouteDTO(1, null, 3400, 1200);
+
+        String createdRouteAsJSON = this.mapper.writeValueAsString(route);
+        ResultMatcher checkBody = MockMvcResultMatchers.content().json(createdRouteAsJSON);
+
+        this.mvc.perform(req).andExpect(checkStatus).andExpect(checkBody);
+    }
 }

@@ -3,6 +3,7 @@ package com.skypedal.skypedal_backend.rest;
 import com.skypedal.skypedal_backend.dto.NewRouteDTO;
 import com.skypedal.skypedal_backend.dto.RouteDTO;
 import com.skypedal.skypedal_backend.services.RouteService;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +32,12 @@ public class RouteController {
     @GetMapping("/{id}")
     public RouteDTO get(@PathVariable Integer id, @RequestParam Integer userId) {
         return this.service.getById(id, userId);
+    }
+
+    @GetMapping("/start/{startId}/end/{endId}")
+    public RouteDTO getByEnds(@PathVariable Integer startId, @PathVariable Integer endId,
+                              @RequestParam Integer userId) {
+        return this.service.getByEnds(startId, endId, userId);
     }
 
     @DeleteMapping("/{id}")

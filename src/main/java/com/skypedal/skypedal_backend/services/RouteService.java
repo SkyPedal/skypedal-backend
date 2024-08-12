@@ -13,6 +13,7 @@ import com.skypedal.skypedal_backend.repo.UserRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RouteService {
@@ -28,16 +29,22 @@ public class RouteService {
         this.mapsAPIService = mapsAPIService;
     }
 
-    public RouteDTO add(NewRouteDTO route, Integer userId) {
-        // Call the maps API
+    private Route createRoute(Integer startId, Integer endId, Integer userId) {
+        System.out.println("Creating route "+startId+"->"+endId+" (user "+userId+")");
         User user = this.userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
-        Location startLocation = this.locationRepo.findById(route.getStartId()).orElseThrow(LocationNotFoundException::new);
+        Location startLocation =
+                this.locationRepo.findById(startId).orElseThrow(LocationNotFoundException::new);
         Location endLocation =
-                this.locationRepo.findById(route.getEndId()).orElseThrow(LocationNotFoundException::new);
+                this.locationRepo.findById(endId).orElseThrow(LocationNotFoundException::new);
         RouteDTO newRoute = this.mapsAPIService.fetchRoute(new LocationDTO(startLocation), new LocationDTO(endLocation)).block();
         if (newRoute == null) throw new NoRouteFoundException();
 
-        Route createdRoute = this.repo.save(new Route(newRoute, startLocation, endLocation, user));
+       return this.repo.save(new Route(newRoute, startLocation, endLocation, user));
+    }
+
+    public RouteDTO add(NewRouteDTO route, Integer userId) {
+        // Call the maps API
+        Route createdRoute = createRoute(route.getStartId(), route.getEndId(), userId);
         return new RouteDTO(createdRoute);
     }
 
@@ -50,6 +57,15 @@ public class RouteService {
     public RouteDTO getById(Integer routeId, Integer userId) {
         User user = this.userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         Route route = this.repo.findById(routeId).orElseThrow(RouteNotFoundException::new);
+        if (route.getUser() != user) throw new UnauthenticatedUserException(); //TODO: Or is admin
+        return new RouteDTO(route);
+    }
+
+    public RouteDTO getByEnds(Integer startId, Integer endId, Integer userId) {
+        User user = this.userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+        Route route = this.repo.findByStartIdAndEndId(startId, endId).orElseGet(
+                () -> createRoute(startId, endId, userId)
+        );
         if (route.getUser() != user) throw new UnauthenticatedUserException(); //TODO: Or is admin
         return new RouteDTO(route);
     }
