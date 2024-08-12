@@ -1,8 +1,6 @@
 package com.skypedal.skypedal_backend.services;
 
 import com.skypedal.skypedal_backend.dto.LocationDTO;
-import com.skypedal.skypedal_backend.dto.LocationDTO;
-import com.skypedal.skypedal_backend.entities.Location;
 import com.skypedal.skypedal_backend.entities.Location;
 import com.skypedal.skypedal_backend.entities.User;
 import com.skypedal.skypedal_backend.exceptions.LocationNotFoundException;
@@ -19,15 +17,24 @@ public class LocationService {
     private final LocationRepo repo;
     private final UserRepo userRepo;
 
-    public LocationService(LocationRepo repo, UserRepo userRepo) {
+    private final MapsAPIService mapsAPIService;
+
+    public LocationService(LocationRepo repo, UserRepo userRepo, MapsAPIService mapsAPIService) {
         this.repo = repo;
         this.userRepo = userRepo;
+        this.mapsAPIService = mapsAPIService;
     }
 
     public LocationDTO add(LocationDTO locationDTO, Integer userId) {
         User user = userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         Location location = this.repo.save(new Location(locationDTO, user));
         return new LocationDTO(location);
+    }
+
+    public List<LocationDTO> query(String query, Integer userId) {
+        User user = userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+        return this.mapsAPIService.fetchLocations(query).block();
+
     }
 
     public List<LocationDTO> get(Integer userId) {

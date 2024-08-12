@@ -100,10 +100,10 @@ public class MapsLocationResponse {
         return places;
     }
 
-    public LocationDTO toLocationDTO() {
-        if (this.places.isEmpty()) return null;
-        GMPlace place = this.places.getFirst();
-        return new LocationDTO(null, place.getDisplayName().getText(), place.location.getLatitude(), place.location.getLongitude());
+    public List<LocationDTO> toLocationDTOs() {
+        return this.places.stream().map(place -> new LocationDTO(
+                null, place.getDisplayName().getText(), place.location.getLatitude(), place.location.getLongitude()
+        )).toList();
     }
 
     public void setPlaces(List<GMPlace> places) {

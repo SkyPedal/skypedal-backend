@@ -22,6 +22,12 @@ public class LocationController {
         return this.service.add(locationDTO, userId);
     }
 
+    @GetMapping("/search")
+    public List<LocationDTO> query(@RequestParam String query, @RequestParam Integer userId) {
+        return this.service.query(query, userId);
+    }
+
+
     @GetMapping("")
     public List<LocationDTO> getAll(@RequestParam Integer userId) {
         return this.service.get(userId);
