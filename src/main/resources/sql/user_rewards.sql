@@ -1,3 +1,7 @@
+--------------------------------------------------------------------------------------------------------------------
+--                                    THIS FILE IS ONLY FOR REFERENCE                                             --
+--  Files are not run as part of the program, only data.sql, test-data.sql, and test-schema.sql are actually used --
+--------------------------------------------------------------------------------------------------------------------
 CREATE TABLE `user_rewards` (
   `id` BIGINT,
   `reward_id` BIGINT,
