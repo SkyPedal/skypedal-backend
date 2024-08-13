@@ -32,15 +32,15 @@ public class LocationService {
     }
 
     public List<LocationDTO> query(String query, Integer userId) {
-        User user = userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+        userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         return this.mapsAPIService.fetchLocations(query).block();
 
     }
 
     public List<LocationDTO> get(Integer userId) {
         User user = this.userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
-        List<Location> route = this.repo.findAll();
-        return route.stream().map(LocationDTO::new).toList();
+        List<Location> locations = this.repo.findAllByUserId(user.getId());
+        return locations.stream().map(LocationDTO::new).toList();
     }
 
     public LocationDTO getById(Integer routeId, Integer userId) {

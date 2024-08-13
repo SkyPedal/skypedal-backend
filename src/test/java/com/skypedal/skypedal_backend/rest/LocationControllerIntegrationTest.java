@@ -61,15 +61,19 @@ public class LocationControllerIntegrationTest {
 
         this.mvc.perform(req).andExpect(checkStatus).andExpect(checkBody);
 
-        RequestBuilder req2 = MockMvcRequestBuilders
+    }
+
+    @Test
+    void testGetOtherUser() throws Exception {
+        RequestBuilder req = MockMvcRequestBuilders
                 .get("/locations?userId=2")
                 .contentType(MediaType.APPLICATION_JSON);
 
-        ResultMatcher checkStatus2 = MockMvcResultMatchers.status().isOk();
-        List<LocationDTO> routes2 = List.of();
+        ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
+        List<LocationDTO> routes = List.of();
 
-        String createdLocationAsJSON2 = this.mapper.writeValueAsString(routes2);
-        ResultMatcher checkBody2 = MockMvcResultMatchers.content().json(createdLocationAsJSON2);
+        String createdLocationAsJSON = this.mapper.writeValueAsString(routes);
+        ResultMatcher checkBody = MockMvcResultMatchers.content().json(createdLocationAsJSON);
 
         this.mvc.perform(req).andExpect(checkStatus).andExpect(checkBody);
     }

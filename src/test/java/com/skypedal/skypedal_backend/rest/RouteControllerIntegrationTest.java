@@ -65,18 +65,23 @@ public class RouteControllerIntegrationTest {
 
         this.mvc.perform(req).andExpect(checkStatus).andExpect(checkBody);
 
-        RequestBuilder req2 = MockMvcRequestBuilders
+    }
+
+    @Test
+    void testGetOtherUser() throws Exception {
+        RequestBuilder req = MockMvcRequestBuilders
                 .get("/routes?userId=2")
                 .contentType(MediaType.APPLICATION_JSON);
 
-        ResultMatcher checkStatus2 = MockMvcResultMatchers.status().isOk();
-        List<RouteDTO> routes2 = List.of(new RouteDTO(2, null, 3500, 1200));
+        ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
+        List<RouteDTO> routes = List.of(new RouteDTO(2, null, 3500, 1300));
 
-        String createdRouteAsJSON2 = this.mapper.writeValueAsString(routes2);
-        ResultMatcher checkBody2 = MockMvcResultMatchers.content().json(createdRouteAsJSON2);
+        String createdRouteAsJSON = this.mapper.writeValueAsString(routes);
+        ResultMatcher checkBody = MockMvcResultMatchers.content().json(createdRouteAsJSON);
 
         this.mvc.perform(req).andExpect(checkStatus).andExpect(checkBody);
     }
+
 
     @Test
     void testGetById() throws Exception {
