@@ -29,10 +29,7 @@ public class UsersRewardsService {
         this.repo.save(toSave);
 
         /* there is now one less available reward remaining */
-        System.out.println("saved successfully: " + toSave + "; with id: " + toSave.getReward().getId());
         Integer numbAvail = rewardService.getReward(toSave.getReward().getId()).getNumberAvailable();
-        System.out.println("numb available: " + numbAvail);
-
         rewardService.updateReward(toSave.getReward().getId(), null, null, null, numbAvail - 1, null, numbAvail > 1);
 
         return new UsersRewardsDTO(toSave);
