@@ -20,7 +20,7 @@ import java.util.List;
 
 @SpringBootTest(webEnvironment =  SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@Sql(scripts = {"classpath:/test/schema-test.sql", "classpath:test/data-test.sql"},
+@Sql(scripts = {"classpath:/test/test-schema.sql", "classpath:test/test-data.sql"},
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @ActiveProfiles("test")
 public class LocationControllerIntegrationTest {

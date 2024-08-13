@@ -53,6 +53,32 @@ public class UsersRewardsControllerIntegrationTest {
         this.mvc.perform(req).andExpect(checkStatus).andExpect(checkBody); // performs the request and checks the response
     }
 
+    /* test create method for unavailable rewards */
+    @Test
+    void testCreateUnavailable() throws Exception {
+        UsersRewardsDTO newUR = new UsersRewardsDTO(null, "Thursday", "2024/09/06 T 12:00", false, 5, 1);
+        String newRewardAsJSON = this.mapper.writeValueAsString(newUR);
+        RequestBuilder req = MockMvcRequestBuilders
+                .post("/users_rewards")
+                .content(newRewardAsJSON)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        this.mvc.perform(req);
+
+        /* Claiming the same reward twice, even though it is available once */
+        UsersRewardsDTO newUR2 = new UsersRewardsDTO(null, "Thursday", "2024/09/06 T 12:00", false, 5, 2);
+        String newUserRewardAsJSON = this.mapper.writeValueAsString(newUR2);
+        RequestBuilder req2 = MockMvcRequestBuilders
+                .post("/users_rewards")
+                .content(newUserRewardAsJSON)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        ResultMatcher checkStatus = MockMvcResultMatchers.status().isForbidden();
+
+
+        this.mvc.perform(req2).andExpect(checkStatus); // performs the request and checks the response
+    }
+
     /* test that available number decreases by 1 */
     @Test
     void testAvailableNumberDecreasesBy1() throws Exception {

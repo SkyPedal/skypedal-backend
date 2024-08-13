@@ -2,6 +2,7 @@ package com.skypedal.skypedal_backend.services;
 
 import com.skypedal.skypedal_backend.dto.RewardDTO;
 import com.skypedal.skypedal_backend.entities.Reward;
+import com.skypedal.skypedal_backend.exceptions.RewardNotAvailableException;
 import com.skypedal.skypedal_backend.exceptions.RewardNotFoundException;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,7 @@ public class RewardService {
         List<RewardDTO> rewardDTOList = this.repo.findAll().stream().map(RewardDTO::new).toList();
         List<RewardDTO> toReturn = new ArrayList<>();
         for (RewardDTO r : rewardDTOList) {
-            if (r.isActive() && r.getNumberAvailable() > 0) toReturn.add(r);
+            if (r.isActive()) toReturn.add(r);
         }
         return toReturn;
     }
@@ -53,6 +54,18 @@ public class RewardService {
         if (numberAvailable != null) found.setNumberAvailable(numberAvailable);
         if (imageLink != null) found.setImageLink(imageLink);
         if (active != null) found.setActive(active);
+
+        Reward updated = this.repo.save(found);
+        return new RewardDTO(updated);
+    }
+
+    public RewardDTO redeemReward(Integer id) {
+        Reward found = this.repo.findById(id).orElseThrow(RewardNotFoundException::new);
+
+        int numbAvail = found.getNumberAvailable() - 1;
+        if (numbAvail < 0) throw new RewardNotAvailableException();
+        found.setNumberAvailable(numbAvail);
+        if (numbAvail < 1) found.setActive(false);
 
         Reward updated = this.repo.save(found);
         return new RewardDTO(updated);

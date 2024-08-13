@@ -12,6 +12,10 @@ public class UsersRewards {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
     private Integer id;
 
+
+
+
+    // CHANGE TO DATETIME OBJECTS
     private String dateRedeemed;
     private String dateExpiry;
     private boolean hasUsed;

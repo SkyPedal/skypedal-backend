@@ -1,3 +1,7 @@
+--------------------------------------------------------------------------------------------------------------------
+--                                    THIS FILE IS ONLY FOR REFERENCE                                             --
+--  Files are not run as part of the program, only data.sql, test-data.sql, and test-schema.sql are actually used --
+--------------------------------------------------------------------------------------------------------------------
 DROP TABLE IF EXISTS `users_rewards` CASCADE;
 
 CREATE TABLE `users_rewards` (
