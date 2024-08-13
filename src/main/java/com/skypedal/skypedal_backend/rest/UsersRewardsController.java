@@ -1,5 +1,6 @@
 package com.skypedal.skypedal_backend.rest;
 
+import com.skypedal.skypedal_backend.dto.NewUsersRewardsDTO;
 import com.skypedal.skypedal_backend.dto.UsersRewardsDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class UsersRewardsController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public UsersRewardsDTO createUserReward(@RequestBody UsersRewardsDTO newUserReward) {
+    public UsersRewardsDTO createUserReward(@RequestBody NewUsersRewardsDTO newUserReward) {
         return this.service.createReward(newUserReward);
     }
 

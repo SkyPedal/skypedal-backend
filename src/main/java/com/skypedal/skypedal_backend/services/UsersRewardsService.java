@@ -1,5 +1,6 @@
 package com.skypedal.skypedal_backend.services;
 
+import com.skypedal.skypedal_backend.dto.NewUsersRewardsDTO;
 import com.skypedal.skypedal_backend.dto.RewardDTO;
 import com.skypedal.skypedal_backend.dto.UsersRewardsDTO;
 import com.skypedal.skypedal_backend.entities.UsersRewards;
@@ -24,7 +25,7 @@ public class UsersRewardsService {
         this.rewardService = rewardService;
     }
 
-    public UsersRewardsDTO createReward(UsersRewardsDTO newUserReward) {
+    public UsersRewardsDTO createReward(NewUsersRewardsDTO newUserReward) {
         UsersRewards toSave = new UsersRewards(newUserReward);
         this.repo.save(toSave);
 

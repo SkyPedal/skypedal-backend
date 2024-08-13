@@ -1,6 +1,7 @@
 package com.skypedal.skypedal_backend.entities;
 
 
+import com.skypedal.skypedal_backend.dto.NewUsersRewardsDTO;
 import com.skypedal.skypedal_backend.dto.UsersRewardsDTO;
 import jakarta.persistence.*;
 
@@ -33,6 +34,21 @@ public class UsersRewards {
         this.dateRedeemed = dateRedeemed;
         this.dateExpiry = dateExpiry;
         this.hasUsed = hasUsed;
+    }
+
+    public UsersRewards(NewUsersRewardsDTO newUserReward) {
+        this.dateRedeemed = LocalDateTime.now();
+        this.dateExpiry = LocalDateTime.now().plusDays(12);
+        this.hasUsed = false;
+
+        if (newUserReward.getUserId() != null) {
+            this.user = new User();
+            this.user.setId(newUserReward.getUserId());
+        }
+        if (newUserReward.getRewardId() != null) {
+            this.reward = new Reward();
+            this.reward.setId(newUserReward.getRewardId());
+        }
     }
 
     public UsersRewards(UsersRewardsDTO newUserReward) {
