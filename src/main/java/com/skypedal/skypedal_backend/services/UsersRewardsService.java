@@ -37,7 +37,7 @@ public class UsersRewardsService {
 
 
         /* THIS LINE DOES NOT UPDATE THE REWARD, WHY???? */
-        rewardService.updateReward(toSave.getReward().getId(), null, null, null, numbAvail - 1, null, null);
+        rewardService.updateReward(toSave.getReward().getId(), null, null, null, numbAvail - 1, null, numbAvail > 1);
 
         return new UsersRewardsDTO(toSave);
     }

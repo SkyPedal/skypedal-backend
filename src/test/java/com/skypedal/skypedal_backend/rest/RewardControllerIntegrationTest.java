@@ -41,7 +41,7 @@ public class RewardControllerIntegrationTest {
         RewardDTO newReward = new RewardDTO(null, "Free Tea", null, null, 15, null, true, null);
         String newRewardAsJSON = this.mapper.writeValueAsString(newReward);
         RequestBuilder req = MockMvcRequestBuilders
-                .post("/rewards/create")
+                .post("/rewards")
                 .content(newRewardAsJSON)
                 .contentType(MediaType.APPLICATION_JSON);
 
@@ -79,7 +79,7 @@ public class RewardControllerIntegrationTest {
     }
     @Test
     void testGetAllRewards() throws Exception {
-        RequestBuilder req = MockMvcRequestBuilders.get("/rewards/getAll");
+        RequestBuilder req = MockMvcRequestBuilders.get("/rewards");
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
 
         this.mvc.perform(req).andExpect(jsonPath("$", hasSize(5))).andExpect(checkStatus);
@@ -96,7 +96,7 @@ public class RewardControllerIntegrationTest {
     @Test
     void testUpdateRewardWithUsersRewardsPresent() throws Exception {
         RequestBuilder req = MockMvcRequestBuilders
-                .patch("/rewards/update/3")
+                .patch("/rewards/3")
                 .param("name", "Free Brownie")
                 .param("numberAvailable", "5")
                 .param("active", "true");
@@ -115,7 +115,7 @@ public class RewardControllerIntegrationTest {
     @Test
     void testUpdateRewardWithNoUsersRewards() throws Exception {
         RequestBuilder req = MockMvcRequestBuilders
-                .patch("/rewards/update/5")
+                .patch("/rewards/5")
                 .param("name", "Free Crown")
                 .param("description", "1 delicious free crown of your choosing!")
                 .param("active", "true");

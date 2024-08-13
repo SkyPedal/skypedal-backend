@@ -18,7 +18,7 @@ public class UsersRewardsController {
         this.service = service;
     }
 
-    @PostMapping("/create")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public UsersRewardsDTO createUserReward(@RequestBody UsersRewardsDTO newUserReward) {
         return this.service.createReward(newUserReward);
@@ -29,7 +29,7 @@ public class UsersRewardsController {
         return this.service.getUserReward(id);
     }
 
-    @GetMapping("/get/{userId}")
+    @GetMapping("/user/{userId}")
     public List<UsersRewardsDTO> getUserRewardsByUserId(@PathVariable int userId) {
         List<UsersRewardsDTO> usersRewardsDTOList = this.service.getUserRewardsByUserId(userId);
         List<UsersRewardsDTO> toReturn = new ArrayList<>();

@@ -17,6 +17,7 @@ CREATE TABLE `users` (
   `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
   `email` VARCHAR(1024),
   `name` VARCHAR(1024),
+--  `firstname` VARCHAR(1024),
 --  `lastname` VARCHAR(1024),
   `password_hash` VARCHAR(1024),
   `profile_picture` VARCHAR(1024),

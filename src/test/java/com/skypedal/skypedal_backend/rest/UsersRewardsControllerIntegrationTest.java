@@ -40,7 +40,7 @@ public class UsersRewardsControllerIntegrationTest {
         UsersRewardsDTO newUR = new UsersRewardsDTO(null, "Thursday", "2024/09/06 T 12:00", false, 1, 1);
         String newRewardAsJSON = this.mapper.writeValueAsString(newUR);
         RequestBuilder req = MockMvcRequestBuilders
-                .post("/users_rewards/create")
+                .post("/users_rewards")
                 .content(newRewardAsJSON)
                 .contentType(MediaType.APPLICATION_JSON);
 
@@ -53,28 +53,25 @@ public class UsersRewardsControllerIntegrationTest {
         this.mvc.perform(req).andExpect(checkStatus).andExpect(checkBody); // performs the request and checks the response
     }
 
-
-
-
-
-
-    // test that available count decreases by 1!!
+    /* test that available number decreases by 1 */
     @Test
     void testAvailableNumberDecreasesBy1() throws Exception {
         UsersRewardsDTO newUR = new UsersRewardsDTO(null, "Thursday", "2024/09/06 T 12:00", false, 4, 2);
         String newRewardAsJSON = this.mapper.writeValueAsString(newUR);
         RequestBuilder req = MockMvcRequestBuilders
-                .post("/users_rewards/create")
+                .post("/users_rewards")
                 .content(newRewardAsJSON)
                 .contentType(MediaType.APPLICATION_JSON);
 
+        this.mvc.perform(req);
         RequestBuilder req2 = MockMvcRequestBuilders.get("/rewards/4");
 
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
         List<UsersRewardsDTO> usersRewardsDTOList = List.of(
-                new UsersRewardsDTO(4, "Thursday", "2024/09/06 T 12:00", false, 4, 1)
+                new UsersRewardsDTO(4, "Thursday", "2024/09/06 T 12:00", false, 4, 1),
+                new UsersRewardsDTO(11, "Thursday", "2024/09/06 T 12:00", false, 4, 2)
         );
-        RewardDTO found = new RewardDTO(4, "Free Car", "1 delicious free car of your choosing!", 100000, 0, "34552345-23452345-23452345.jpg", true, usersRewardsDTOList);
+        RewardDTO found = new RewardDTO(4, "Free Car", "1 delicious free car of your choosing!", 100000, 0, "34552345-23452345-23452345.jpg", false, usersRewardsDTOList);
         String foundAsJSON = this.mapper.writeValueAsString(found);
         ResultMatcher checkBody = MockMvcResultMatchers.content().json(foundAsJSON);
 
@@ -104,7 +101,7 @@ public class UsersRewardsControllerIntegrationTest {
     }
     @Test
     void testGetActiveUsersRewards() throws Exception {
-        RequestBuilder req = MockMvcRequestBuilders.get("/users_rewards/get/2");
+        RequestBuilder req = MockMvcRequestBuilders.get("/users_rewards/user/2");
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
 
         UsersRewardsDTO found = new UsersRewardsDTO(5, "Thursday", "2024/09/06 T 12:00", false, 1, 2);
@@ -117,7 +114,7 @@ public class UsersRewardsControllerIntegrationTest {
     }
     @Test
     void testGetActiveUsersRewardsSize() throws Exception {
-        RequestBuilder req = MockMvcRequestBuilders.get("/users_rewards/get/1");
+        RequestBuilder req = MockMvcRequestBuilders.get("/users_rewards/user/1");
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
 
         this.mvc.perform(req).andExpect(jsonPath("$", hasSize(4))).andExpect(checkStatus);

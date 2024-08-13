@@ -17,7 +17,7 @@ public class RewardController {
         this.service = service;
     }
 
-    @PostMapping("/create")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public RewardDTO createReward(@RequestBody RewardDTO newReward) {
         return this.service.createReward(newReward);
@@ -28,7 +28,7 @@ public class RewardController {
         return this.service.getReward(id);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("")
     public List<RewardDTO> getRewards() {
         return this.service.getRewards();
     }
@@ -38,7 +38,7 @@ public class RewardController {
         return this.service.getAvailableRewards();
     }
 
-    @PatchMapping("/update/{id}")
+    @PatchMapping("/{id}")
     public RewardDTO updateReward(@PathVariable int id,
                                   @RequestParam(required = false) String name,
                                   @RequestParam(required = false) String description,
