@@ -2,8 +2,10 @@
 --                                    THIS FILE IS ONLY FOR REFERENCE                                             --
 --  Files are not run as part of the program, only data.sql, test-data.sql, and test-schema.sql are actually used --
 --------------------------------------------------------------------------------------------------------------------
+DROP TABLE IF EXISTS `users` CASCADE;
+
 CREATE TABLE `users` (
-  `id` BIGINT,
+  `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
   `email` VARCHAR(1024),
   `firstname` VARCHAR(1024),
   `lastname` VARCHAR(1024),
@@ -13,6 +15,6 @@ CREATE TABLE `users` (
   `points_remaining` BIGINT
 );
 
-INSERT INTO `users` (`id`,`email`,`firstname`,`lastname`,`password_hash`,`profile_picture`,`office`,`points_remaining`)
+INSERT INTO `users` (`email`,`firstname`,`lastname`,`password_hash`,`profile_picture`,`office`,`points_remaining`)
 VALUES
-(1,'will@sky.uk','will','moolman','23457andsf','default.jpg','Livingston',42);
+('will@sky.uk','will','moolman','23457andsf','default.jpg','Livingston',42);
