@@ -43,4 +43,11 @@ public class UsersRewardsService {
     public List<UsersRewardsDTO> getUserRewardsByUserId(int userId) {
         return this.repo.findAllByUserId(userId).stream().map(UsersRewardsDTO::new).toList();
     }
+
+    public UsersRewardsDTO useUserReward(int id) {
+        UsersRewards found = this.repo.findById(id).orElseThrow(UsersRewardsNotFoundException::new);
+        found.setHasUsed(true);
+        this.repo.save(found);
+        return new UsersRewardsDTO(found);
+    }
 }

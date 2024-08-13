@@ -42,4 +42,9 @@ public class UsersRewardsController {
 
         return toReturn;
     }
+
+    @PatchMapping("/{id}")
+    public UsersRewardsDTO useUserReward(@PathVariable int id) {
+        return this.service.useUserReward(id);
+    }
 }
