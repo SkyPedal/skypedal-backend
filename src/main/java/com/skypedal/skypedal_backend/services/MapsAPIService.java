@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 @Service
 public class MapsAPIService {
     private final WebClient placesClient;
@@ -19,14 +21,14 @@ public class MapsAPIService {
         this.routesClient = routesClient;
     }
 
-    public Mono<LocationDTO> fetchLocation(String queryText) {
+    public Mono<List<LocationDTO>> fetchLocations(String queryText) {
         return placesClient
                 .post().uri("/places:searchText")
                 .header("X-Goog-FieldMask", "places.displayName,places.formattedAddress,places.location")
                 .bodyValue(new MapsLocationRequest(queryText))
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, _ -> Mono.error(MapsAPIException::new))
-                .bodyToMono(MapsLocationResponse.class).map(MapsLocationResponse::toLocationDTO);
+                .bodyToMono(MapsLocationResponse.class).map(MapsLocationResponse::toLocationDTOs);
     }
 
     public Mono<RouteDTO> fetchRoute(LocationDTO start, LocationDTO end) {

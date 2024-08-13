@@ -6,13 +6,14 @@ import com.skypedal.skypedal_backend.dto.RouteDTO;
 import com.skypedal.skypedal_backend.entities.Location;
 import com.skypedal.skypedal_backend.entities.Route;
 import com.skypedal.skypedal_backend.entities.User;
-import com.skypedal.skypedal_backend.exceptions.LocationNotFoundException;
-import com.skypedal.skypedal_backend.exceptions.NoRouteFoundException;
-import com.skypedal.skypedal_backend.exceptions.UserNotFoundException;
+import com.skypedal.skypedal_backend.exceptions.*;
 import com.skypedal.skypedal_backend.repo.LocationRepo;
 import com.skypedal.skypedal_backend.repo.RouteRepo;
 import com.skypedal.skypedal_backend.repo.UserRepo;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RouteService {
@@ -28,18 +29,53 @@ public class RouteService {
         this.mapsAPIService = mapsAPIService;
     }
 
-    public RouteDTO add(NewRouteDTO route, Integer userId) {
-        // Call the maps API
+    private Route createRoute(Integer startId, Integer endId, Long userId) {
+        System.out.println("Creating route "+startId+"->"+endId+" (user "+userId+")");
         User user = this.userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
-        Location startLocation = this.locationRepo.findById(route.getStartId()).orElseThrow(LocationNotFoundException::new);
+        Location startLocation =
+                this.locationRepo.findById(startId).orElseThrow(LocationNotFoundException::new);
         Location endLocation =
-                this.locationRepo.findById(route.getEndId()).orElseThrow(LocationNotFoundException::new);
+                this.locationRepo.findById(endId).orElseThrow(LocationNotFoundException::new);
         RouteDTO newRoute = this.mapsAPIService.fetchRoute(new LocationDTO(startLocation), new LocationDTO(endLocation)).block();
         if (newRoute == null) throw new NoRouteFoundException();
-        String geoJson = null;
-        Integer distanceM = null;
-        Integer durationS = null;
-        Route createdRoute = this.repo.save(new Route(newRoute, startLocation, endLocation, user));
+
+       return this.repo.save(new Route(newRoute, startLocation, endLocation, user));
+    }
+
+    public RouteDTO add(NewRouteDTO route, Long userId) {
+        // Call the maps API
+        Route createdRoute = createRoute(route.getStartId(), route.getEndId(), userId);
         return new RouteDTO(createdRoute);
+    }
+
+    public List<RouteDTO> get(Long userId) {
+        User user = this.userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+        List<Route> routes = this.repo.findByUserId(userId);
+        return routes.stream().map(RouteDTO::new).toList();
+    }
+
+    public RouteDTO getById(Integer routeId, Long userId) {
+        User user = this.userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+        Route route = this.repo.findById(routeId).orElseThrow(RouteNotFoundException::new);
+        if (route.getUser() != user) throw new UnauthenticatedUserException(); //TODO: Or is admin
+        return new RouteDTO(route);
+    }
+
+    public RouteDTO getByEnds(Integer startId, Integer endId, Long userId) {
+        User user = this.userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+        Route route = this.repo.findByStartIdAndEndId(startId, endId).orElseGet(
+                () -> createRoute(startId, endId, userId)
+        );
+        if (route.getUser() != user) throw new UnauthenticatedUserException(); //TODO: Or is admin
+        return new RouteDTO(route);
+    }
+
+    public RouteDTO removeById(Integer routeId, Long userId) {
+        User user = this.userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+        Route route = this.repo.findById(routeId).orElseThrow(RouteNotFoundException::new);
+        if (route.getUser() != user) throw new UnauthenticatedUserException(); //TODO: Or is admin
+        this.repo.deleteById(routeId);
+        return new RouteDTO(route);
+
     }
 }

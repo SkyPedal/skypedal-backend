@@ -19,7 +19,7 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/")
+    @PostMapping("")
     public UserDTO create(@RequestBody UserDTO user) {
         return this.service.add(user);
     }
@@ -32,6 +32,26 @@ public class UserController {
     @PostMapping("/register")
     public UserDTO registerUser(@RequestBody @Validated UserDTO user) {
         return this.service.registerUser(user);
+    }
+
+    @GetMapping("")
+    public List<UserDTO> getAll(@RequestParam Long userId) {
+        return this.service.get();
+    }
+
+    @GetMapping("/{id}")
+    public UserDTO get(@PathVariable Long id) {
+        return this.service.getById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public UserDTO delete(@PathVariable Long id) {
+        return this.service.removeById(id);
+    }
+
+    @PutMapping("/{id}")
+    public UserDTO update(@PathVariable Long id, @RequestBody UserDTO user) {
+        return this.service.updateById(id, user);
     }
 
 }

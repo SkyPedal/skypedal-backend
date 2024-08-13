@@ -1,3 +1,8 @@
+--------------------------------------------------------------------------------------------------------------------
+--                                    THIS FILE IS ONLY FOR REFERENCE                                             --
+--  Files are not run as part of the program, only data.sql, test-data.sql, and test-schema.sql are actually used --
+--------------------------------------------------------------------------------------------------------------------
+
 CREATE TABLE `activities` (
   `id` BIGINT,
   `date` VARCHAR(1024),

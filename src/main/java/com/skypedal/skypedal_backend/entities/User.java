@@ -3,6 +3,8 @@ package com.skypedal.skypedal_backend.entities;
 import com.skypedal.skypedal_backend.dto.UserDTO;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -16,8 +18,11 @@ public class User {
     @Column(nullable = false, name = "password_hash")
     private String passwordHash;
 
-    public User() {
+    @OneToMany(mappedBy = "user")
+    private List<UsersRewards> usersRewards;
 
+    public User() {
+        super();
     }
 
     public User(Long id, String name) {
@@ -61,5 +66,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<UsersRewards> getUsersRewards() {
+        return usersRewards;
+    }
+
+    public void setUsersRewards(List<UsersRewards> usersRewards) {
+        this.usersRewards = usersRewards;
     }
 }
