@@ -3,10 +3,10 @@ DROP TABLE IF EXISTS `locations` CASCADE;
 DROP TABLE IF EXISTS `routes` CASCADE;
 
 CREATE TABLE `users` (
-    `id` INTEGER,
+    `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
     `name` VARCHAR(255),
     `email` VARCHAR(1024),
-    `password_hash` VARCHAR(1024),
+    `password_hash` VARCHAR(1024)
 );
 
 CREATE TABLE `locations` (

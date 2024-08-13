@@ -13,6 +13,11 @@ public class AuthenticationRequest {
     @Size(max = 255)
     private String password;
 
+    public AuthenticationRequest(String login, String password) {
+        this.login = login;
+        this.password = password;
+    }
+
     public @NotNull @Size(max = 255) String getLogin() {
         return login;
     }
