@@ -28,8 +28,39 @@ public class UserService {
     }
 
     public List<UserDTO> getAllUsers() {
-        List<User> users = this.repo.findAll();
-        return this.repo.findAll().stream().map(UserDTO::new).toList();
+        return this.repo.findAll().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public UserDTO updateUser(int id, UserDTO userDTO) {
+        User existingUser = this.repo.findById(id).orElseThrow(UserNotFoundException::new);
+
+        // Only update fields that are not null in the UserDTO
+        if (userDTO.getFirstName() != null) {
+            existingUser.setFirstName(userDTO.getFirstName());
+        }
+        if (userDTO.getLastName() != null) {
+            existingUser.setLastName(userDTO.getLastName());
+        }
+        if (userDTO.getEmail() != null) {
+            existingUser.setEmail(userDTO.getEmail());
+        }
+        if (userDTO.getOfficeLocation() != null) {
+            existingUser.setOfficeLocation(userDTO.getOfficeLocation());
+        }
+        if (0 != userDTO.getRewardPoints()) {
+            existingUser.setRewardPoints(userDTO.getRewardPoints());
+        }
+
+        // Save updated user back to the database
+        User updatedUser = this.repo.save(existingUser);
+        return new UserDTO(updatedUser);
+    }
+
+    public void deleteUser(int id) {
+        User existingUser = this.repo.findById(id).orElseThrow(UserNotFoundException::new);
+        this.repo.delete(existingUser);
     }
 
     private UserDTO convertToDTO(User user) {
