@@ -3,6 +3,7 @@ package com.skypedal.skypedal_backend.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skypedal.skypedal_backend.dto.RewardDTO;
 import com.skypedal.skypedal_backend.dto.UsersRewardsDTO;
+import com.skypedal.skypedal_backend.test.Constants;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,7 +17,9 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -61,7 +64,7 @@ public class RewardControllerIntegrationTest {
 
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
         List<UsersRewardsDTO> usersRewardsDTOList = List.of(
-                new UsersRewardsDTO(4, "Thursday", "2024/09/06 T 12:00", false, 4, 1)
+                new UsersRewardsDTO(4, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, false, 4, 1)
         );
         RewardDTO found = new RewardDTO(4, "Free Car", "1 delicious free car of your choosing!", 100000, 1, "34552345-23452345-23452345.jpg", true, usersRewardsDTOList);
         String foundAsJSON = this.mapper.writeValueAsString(found);
@@ -103,7 +106,7 @@ public class RewardControllerIntegrationTest {
 
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
         List<UsersRewardsDTO> usersRewardsDTOS = List.of(
-                new UsersRewardsDTO(3, "Thursday", "2024/09/06 T 12:00", false, 3, 1)
+                new UsersRewardsDTO(3, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, false, 3, 1)
         );
         RewardDTO createdReward = new RewardDTO(3, "Free Brownie", "1 delicious free cookie of your choosing!", 500, 5, "34552345-23452345-23452345.jpg", true, usersRewardsDTOS);
         String createdRewardAsJSON = this.mapper.writeValueAsString(createdReward);

@@ -3,6 +3,7 @@ package com.skypedal.skypedal_backend.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skypedal.skypedal_backend.dto.RewardDTO;
 import com.skypedal.skypedal_backend.dto.UsersRewardsDTO;
+import com.skypedal.skypedal_backend.test.Constants;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,6 +17,8 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -37,7 +40,7 @@ public class UsersRewardsControllerIntegrationTest {
     /* test create method */
     @Test
     void testCreate() throws Exception {
-        UsersRewardsDTO newUR = new UsersRewardsDTO(null, "Thursday", "2024/09/06 T 12:00", false, 1, 1);
+        UsersRewardsDTO newUR = new UsersRewardsDTO(null, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, false, 1, 1);
         String newRewardAsJSON = this.mapper.writeValueAsString(newUR);
         RequestBuilder req = MockMvcRequestBuilders
                 .post("/users_rewards")
@@ -45,7 +48,7 @@ public class UsersRewardsControllerIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON);
 
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isCreated();
-        UsersRewardsDTO createdUR = new UsersRewardsDTO(11, "Thursday", "2024/09/06 T 12:00", false, 1, 1);
+        UsersRewardsDTO createdUR = new UsersRewardsDTO(11, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, false, 1, 1);
         String createdDriverAsJSON = this.mapper.writeValueAsString(createdUR);
         ResultMatcher checkBody = MockMvcResultMatchers.content().json(createdDriverAsJSON);
 
@@ -56,7 +59,7 @@ public class UsersRewardsControllerIntegrationTest {
     /* test create method for unavailable rewards */
     @Test
     void testCreateUnavailable() throws Exception {
-        UsersRewardsDTO newUR = new UsersRewardsDTO(null, "Thursday", "2024/09/06 T 12:00", false, 5, 1);
+        UsersRewardsDTO newUR = new UsersRewardsDTO(null, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, false, 5, 1);
         String newRewardAsJSON = this.mapper.writeValueAsString(newUR);
         RequestBuilder req = MockMvcRequestBuilders
                 .post("/users_rewards")
@@ -66,7 +69,7 @@ public class UsersRewardsControllerIntegrationTest {
         this.mvc.perform(req);
 
         /* Claiming the same reward twice, even though it is available once */
-        UsersRewardsDTO newUR2 = new UsersRewardsDTO(null, "Thursday", "2024/09/06 T 12:00", false, 5, 2);
+        UsersRewardsDTO newUR2 = new UsersRewardsDTO(null, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, false, 5, 2);
         String newUserRewardAsJSON = this.mapper.writeValueAsString(newUR2);
         RequestBuilder req2 = MockMvcRequestBuilders
                 .post("/users_rewards")
@@ -82,7 +85,7 @@ public class UsersRewardsControllerIntegrationTest {
     /* test that available number decreases by 1 */
     @Test
     void testAvailableNumberDecreasesBy1() throws Exception {
-        UsersRewardsDTO newUR = new UsersRewardsDTO(null, "Thursday", "2024/09/06 T 12:00", false, 4, 2);
+        UsersRewardsDTO newUR = new UsersRewardsDTO(null, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, false, 4, 2);
         String newRewardAsJSON = this.mapper.writeValueAsString(newUR);
         RequestBuilder req = MockMvcRequestBuilders
                 .post("/users_rewards")
@@ -94,8 +97,8 @@ public class UsersRewardsControllerIntegrationTest {
 
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
         List<UsersRewardsDTO> usersRewardsDTOList = List.of(
-                new UsersRewardsDTO(4, "Thursday", "2024/09/06 T 12:00", false, 4, 1),
-                new UsersRewardsDTO(11, "Thursday", "2024/09/06 T 12:00", false, 4, 2)
+                new UsersRewardsDTO(4, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, false, 4, 1),
+                new UsersRewardsDTO(11, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, false, 4, 2)
         );
         RewardDTO found = new RewardDTO(4, "Free Car", "1 delicious free car of your choosing!", 100000, 0, "34552345-23452345-23452345.jpg", false, usersRewardsDTOList);
         String foundAsJSON = this.mapper.writeValueAsString(found);
@@ -111,7 +114,7 @@ public class UsersRewardsControllerIntegrationTest {
         RequestBuilder req = MockMvcRequestBuilders.get("/users_rewards/4");
 
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
-        UsersRewardsDTO found = new UsersRewardsDTO(4, "Thursday", "2024/09/06 T 12:00", false, 4, 1);
+        UsersRewardsDTO found = new UsersRewardsDTO(4, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, false, 4, 1);
         String foundAsJSON = this.mapper.writeValueAsString(found);
         ResultMatcher checkBody = MockMvcResultMatchers.content().json(foundAsJSON);
 
@@ -130,7 +133,7 @@ public class UsersRewardsControllerIntegrationTest {
         RequestBuilder req = MockMvcRequestBuilders.get("/users_rewards/user/2");
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
 
-        UsersRewardsDTO found = new UsersRewardsDTO(5, "Thursday", "2024/09/06 T 12:00", false, 1, 2);
+        UsersRewardsDTO found = new UsersRewardsDTO(5, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, false, 1, 2);
         List<UsersRewardsDTO> foundList = List.of(found);
         String foundAsJSON = this.mapper.writeValueAsString(foundList);
         ResultMatcher checkBody = MockMvcResultMatchers.content().json(foundAsJSON);
