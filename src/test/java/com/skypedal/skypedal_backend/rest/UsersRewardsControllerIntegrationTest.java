@@ -146,4 +146,20 @@ public class UsersRewardsControllerIntegrationTest {
 
         this.mvc.perform(req).andExpect(jsonPath("$", hasSize(4))).andExpect(checkStatus);
     }
+
+    /* test use method */
+    @Test
+    void testUseMethod() throws Exception {
+        RequestBuilder req = MockMvcRequestBuilders.patch("/users_rewards/1");
+        ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
+        this.mvc.perform(req).andExpect(checkStatus);
+
+        RequestBuilder req2 = MockMvcRequestBuilders.get("/users_rewards/1");
+        ResultMatcher checkStatus2 = MockMvcResultMatchers.status().isOk();
+        UsersRewardsDTO found = new UsersRewardsDTO(1, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, true, 1, 1);
+        String foundAsJSON = this.mapper.writeValueAsString(found);
+        ResultMatcher checkBody = MockMvcResultMatchers.content().json(foundAsJSON);
+
+        this.mvc.perform(req2).andExpect(checkBody).andExpect(checkStatus2);
+    }
 }
