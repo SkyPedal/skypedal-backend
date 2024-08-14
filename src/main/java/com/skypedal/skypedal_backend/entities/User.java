@@ -1,49 +1,59 @@
 package com.skypedal.skypedal_backend.entities;
-import jakarta.persistence.*;
-import com.skypedal.skypedal_backend.dto.UserDTO;
 
+import com.skypedal.skypedal_backend.dto.UserDTO;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User {
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(unique = true, nullable = false)
     private String email;
     private String firstName;
     private String lastName;
     private int rewardPoints;
     private String officeLocation;
 
-    public User(){
+    @Column(nullable = false, name = "password_hash")
+    private String passwordHash;
+
+    @OneToMany(mappedBy = "user")
+    private List<UsersRewards> usersRewards;
+
+    public User() {
         super();
     }
 
-    public User(String email, String password, String firstName, String lastName, Integer rewardPoints, String officeLocation){
+    public User(Long id, String email, String password, String firstName, String lastName, Integer rewardPoints, String officeLocation) {
         this.email = email;
+        this.id = id;
         this.firstName = firstName;
         this.rewardPoints = rewardPoints;
         this.officeLocation = officeLocation;
-
     }
 
-    public User (UserDTO userdto){
-        this.firstName = userdto.getFirstName();
-        this.lastName = userdto.getLastName();
-        this.email = userdto.getEmail();
-        this.rewardPoints = userdto.getRewardPoints();
-        this.officeLocation = userdto.getOfficeLocation();
+    public User(UserDTO userDTO) {
+        this.id = userDTO.getId();
+        this.firstName = userDTO.getFirstName();
+        this.lastName = userDTO.getLastName();
+        this.email = userDTO.getEmail();
+        this.rewardPoints = userDTO.getRewardPoints();
+        this.officeLocation = userDTO.getOfficeLocation();
     }
-
     // Getters and Setters
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -80,11 +90,19 @@ public class User {
 
     public String getOfficeLocation() {
         return officeLocation;
+    public List<UsersRewards> getUsersRewards() {
+        return usersRewards;
+    }
+
+    public void setUsersRewards(List<UsersRewards> usersRewards) {
+        this.usersRewards = usersRewards;
     }
 
     public void setOfficeLocation(String officeLocation) {
         this.officeLocation = officeLocation;
     }
 
-
+    public void setPasswordHash(String password) {
+        this.passwordHash = password;
+    }
 }
