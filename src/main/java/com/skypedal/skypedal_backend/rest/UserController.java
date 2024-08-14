@@ -1,7 +1,7 @@
 package com.skypedal.skypedal_backend.rest;
 
 import com.skypedal.skypedal_backend.dto.UserDTO;
-import com.skypedal.skypedal_backend.Services.UserService;
+import com.skypedal.skypedal_backend.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

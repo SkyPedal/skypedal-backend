@@ -19,9 +19,9 @@ public class User {
     private String officeLocation;
 
     @Column(nullable = false, name = "password_hash")
-    private String passwordHash;
+    private String password_Hash;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private List<UsersRewards> usersRewards;
 
     public User() {
@@ -104,11 +104,11 @@ public class User {
         this.officeLocation = officeLocation;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
+    public String getPassword_Hash() {
+        return password_Hash;
     }
 
-    public void setPasswordHash(String password) {
-        this.passwordHash = password;
+    public void setPassword_Hash(String password) {
+        this.password_Hash = password;
     }
 }

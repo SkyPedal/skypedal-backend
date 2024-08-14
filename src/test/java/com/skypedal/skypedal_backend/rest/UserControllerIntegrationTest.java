@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import java.util.*;
 
 import java.util.List;
 
@@ -35,10 +36,10 @@ public class UserControllerIntegrationTest {
     //tests GET function
     @Test
     void testGetUserById() throws Exception {
-        RequestBuilder req = MockMvcRequestBuilders.get("/users/6");
+        RequestBuilder req = MockMvcRequestBuilders.get("/users/3");
 
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
-        UserDTO expectedUser = new UserDTO(6L, "John", "Johnson", "John@email.com", "test123", 25, "Leeds", null);
+        UserDTO expectedUser = new UserDTO(3L, "John", "Johnson", "John@email.com", null, 25, "Leeds", Collections.emptyList());
         String expectedUserAsJSON = this.mapper.writeValueAsString(expectedUser);
         ResultMatcher checkBody = MockMvcResultMatchers.content().json(expectedUserAsJSON);
 
@@ -49,11 +50,11 @@ public class UserControllerIntegrationTest {
     @Test
     void testGetAllUsers() throws Exception {
         RequestBuilder req = MockMvcRequestBuilders.get("/users/all");
-
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
-        UserDTO user1 = new UserDTO(6L, "John", "Johnson", "John@email.com", "test123", 25, "Leeds", null);
-        UserDTO user2 = new UserDTO(7L, "Bob", "Bobson", "bob@email.com", "password123", 30, "Livingston", null);
-        List<UserDTO> expectedUsers = List.of(user1, user2);
+        UserDTO user1 = new UserDTO(1L, "will", "moolman", "will@sky.uk", null, 42, "Livingston", Collections.emptyList());
+        UserDTO user2 = new UserDTO(2L, "Sam", "El", "Samel@sky.com", null, 25, "Brentwood", Collections.emptyList());
+        UserDTO user3 = new UserDTO(3L, "John", "Johnson", "John@email.com", null, 25, "Leeds", Collections.emptyList());
+        List<UserDTO> expectedUsers = List.of(user1, user2, user3);
         String expectedUsersAsJSON = this.mapper.writeValueAsString(expectedUsers);
         ResultMatcher checkBody = MockMvcResultMatchers.content().json(expectedUsersAsJSON);
 
@@ -63,17 +64,17 @@ public class UserControllerIntegrationTest {
     //tests UPDATE user fields
     @Test
     void testUpdateUser() throws Exception {
-        UserDTO updatedUser = new UserDTO(6L, "Bob", "Bobson", "bob@email.com", "password123", 30, "Livingston", null);
+        UserDTO updatedUser = new UserDTO(3L, "Bob", "Bobson", "bob@email.com", null, 30, "Livingston", Collections.emptyList());
         String updatedUserAsJSON = this.mapper.writeValueAsString(updatedUser);
 
         RequestBuilder req = MockMvcRequestBuilders
-                .put("/users/6")
+                .put("/users/3")
                 .content(updatedUserAsJSON)
                 .contentType(MediaType.APPLICATION_JSON);
 
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
 
-        UserDTO expectedUser = new UserDTO(6L, "Bob", "Bobson", "bob@email.com", "password123", 30, "Livingston", null);
+        UserDTO expectedUser = new UserDTO(3L, "Bob", "Bobson", "bob@email.com", null, 30, "Livingston", null);
         String expectedUserAsJSON = this.mapper.writeValueAsString(expectedUser);
         ResultMatcher checkBody = MockMvcResultMatchers.content().json(expectedUserAsJSON);
 
