@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @SpringBootTest(webEnvironment =  SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@Sql(scripts = {"classpath:/test/test-schema.sql", "classpath:test/test-data.sql"},
+@Sql(scripts = {"classpath:/test/test-schema.sql", "classpath:test/test-test-data.sql"},
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 public class LoginIntegrationTest {
     @Autowired
