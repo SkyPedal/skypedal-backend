@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc(addFilters = false) // creates the mockmvc object
-@Sql(scripts = {"classpath:test/test-schema.sql", "classpath:test/test-test-data.sql"},
+@Sql(scripts = {"classpath:test/test-schema.sql", "classpath:test/test-data.sql"},
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @ActiveProfiles("test")
 public class UsersRewardsControllerIntegrationTest {

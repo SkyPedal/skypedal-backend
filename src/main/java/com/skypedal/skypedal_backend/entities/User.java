@@ -19,7 +19,7 @@ public class User {
     private String officeLocation;
 
     @Column(nullable = false, name = "password_hash")
-    private String password_Hash;
+    private String password;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private List<UsersRewards> usersRewards;
@@ -105,10 +105,10 @@ public class User {
     }
 
     public String getPassword_Hash() {
-        return password_Hash;
+        return password;
     }
 
     public void setPassword_Hash(String password) {
-        this.password_Hash = password;
+        this.password = password;
     }
 }
