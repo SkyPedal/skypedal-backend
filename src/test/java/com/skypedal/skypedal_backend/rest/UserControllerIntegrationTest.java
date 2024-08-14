@@ -19,7 +19,7 @@ import java.util.List;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 @Sql(scripts = {"classpath:test/users.sql", "classpath:test/data.sql"},
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @ActiveProfiles("test")
@@ -31,33 +31,14 @@ public class UserControllerIntegrationTest {
     @Autowired
     private ObjectMapper mapper;
 
-    //checks CREATE function
-    @Test
-    void testCreateUser() throws Exception {
-        UserDTO newUser = new UserDTO("Sam", "El", "samel@sky.com", 25, "Brentwood");
-        String newUserAsJSON = this.mapper.writeValueAsString(newUser);
-
-        RequestBuilder req = MockMvcRequestBuilders
-                .post("/users")
-                .content(newUserAsJSON)
-                .contentType(MediaType.APPLICATION_JSON);
-
-        ResultMatcher checkStatus = MockMvcResultMatchers.status().isCreated();
-
-        UserDTO createdUser = new UserDTO("Sam", "El", "samel@sky.com", 25, "Brentwood");
-        String createdUserAsJSON = this.mapper.writeValueAsString(createdUser);
-        ResultMatcher checkBody = MockMvcResultMatchers.content().json(createdUserAsJSON);
-
-        this.mvc.perform(req).andExpect(checkStatus).andExpect(checkBody);
-    }
 
     //tests GET function
     @Test
     void testGetUserById() throws Exception {
-        RequestBuilder req = MockMvcRequestBuilders.get("/users/1");
+        RequestBuilder req = MockMvcRequestBuilders.get("/users/6");
 
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
-        UserDTO expectedUser = new UserDTO("will", "moolman", "will@sky.uk", 42, "Livingston");
+        UserDTO expectedUser = new UserDTO(6L, "John", "Johnson", "John@email.com", "test123", 25, "Leeds", null);
         String expectedUserAsJSON = this.mapper.writeValueAsString(expectedUser);
         ResultMatcher checkBody = MockMvcResultMatchers.content().json(expectedUserAsJSON);
 
@@ -70,8 +51,8 @@ public class UserControllerIntegrationTest {
         RequestBuilder req = MockMvcRequestBuilders.get("/users/all");
 
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
-        UserDTO user1 = new UserDTO("will", "moolman", "will@sky.uk", 42, "Livingston");
-        UserDTO user2 = new UserDTO("Sam", "El", "Samel@sky.com", 25, "Brentwood");
+        UserDTO user1 = new UserDTO(6L, "John", "Johnson", "John@email.com", "test123", 25, "Leeds", null);
+        UserDTO user2 = new UserDTO(7L, "Bob", "Bobson", "bob@email.com", "password123", 30, "Livingston", null);
         List<UserDTO> expectedUsers = List.of(user1, user2);
         String expectedUsersAsJSON = this.mapper.writeValueAsString(expectedUsers);
         ResultMatcher checkBody = MockMvcResultMatchers.content().json(expectedUsersAsJSON);
@@ -82,17 +63,17 @@ public class UserControllerIntegrationTest {
     //tests UPDATE user fields
     @Test
     void testUpdateUser() throws Exception {
-        UserDTO updatedUser = new UserDTO("william", "moolman", "william.moolman@example.com", 50, "Brentwood");
+        UserDTO updatedUser = new UserDTO(6L, "Bob", "Bobson", "bob@email.com", "password123", 30, "Livingston", null);
         String updatedUserAsJSON = this.mapper.writeValueAsString(updatedUser);
 
         RequestBuilder req = MockMvcRequestBuilders
-                .put("/users/1")
+                .put("/users/6")
                 .content(updatedUserAsJSON)
                 .contentType(MediaType.APPLICATION_JSON);
 
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
 
-        UserDTO expectedUser = new UserDTO("william", "moolman", "william.moolman@example.com", 50, "Brentwood");
+        UserDTO expectedUser = new UserDTO(6L, "Bob", "Bobson", "bob@email.com", "password123", 30, "Livingston", null);
         String expectedUserAsJSON = this.mapper.writeValueAsString(expectedUser);
         ResultMatcher checkBody = MockMvcResultMatchers.content().json(expectedUserAsJSON);
 

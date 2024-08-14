@@ -1,4 +1,4 @@
-package com.skypedal.skypedal_backend.services;
+package com.skypedal.skypedal_backend.Services;
 
 import com.skypedal.skypedal_backend.dto.UserDTO;
 import com.skypedal.skypedal_backend.dto.UserDTO;
@@ -22,11 +22,6 @@ public class UserService {
     public UserService(UserRepo repo, PasswordEncoder passwordEncoder) {
         this.repo = repo;
         this.passwordEncoder = passwordEncoder;
-    }
-
-    public UserDTO add(UserDTO userDTO) {
-        User user = this.repo.save(new User(userDTO));
-        return new UserDTO(user);
     }
 
     public List<UserDTO> getAll() {

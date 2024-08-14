@@ -1,9 +1,9 @@
 INSERT INTO `users` (`first_name`,`last_name`, `email`, `password_hash`, `office_location`,`reward_points`)
-VALUES ('William Moolman', 'email1', 'hash1'),
-       ('Simonas Burkovskis', 'email2', 'hash2'),
-       ('Robert Pettit', 'email3', 'hash3'),
-       ('Vladimir Volgin', 'email4', 'hash4'),
-       ('Samuel Elliott', 'email5', 'hash5');
+VALUES ('William', 'Moolman', 'email1', 'hash1', 'Livingston', 42),
+       ('Simonas', 'Burkovskis', 'email2', 'hash2', 'Livingston', 100),
+       ('Robert', 'Pettit', 'email3', 'hash3', 'Leeds', 33),
+       ('Vladimir', 'Volgin', 'email4', 'hash4', 'Leeds', 40),
+       ('Samuel', 'Elliott', 'email5', 'hash5', 'Brentwood', 55);
 
 INSERT INTO `locations` (`name`,`lat`,`lng`,`user_id`)
 VALUES

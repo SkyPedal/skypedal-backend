@@ -31,7 +31,7 @@ public class LoginIntegrationTest {
 
     @Test
     void testRegister() throws Exception {
-        UserDTO newUser = new UserDTO(6L, "John", "John@email.com", "test123");
+        UserDTO newUser = new UserDTO(6L, "John", "Johnson", "John@email.com", "test123", 25, "Leeds", null);
         String json = mapper.writeValueAsString(newUser);
         RequestBuilder req = MockMvcRequestBuilders
                 .post("/users/register")
@@ -46,7 +46,7 @@ public class LoginIntegrationTest {
 
     @Test
     void testAuthenticate() throws Exception {
-        UserDTO newUser = new UserDTO(6L, "Bob", "bob@email.com", "password123");
+        UserDTO newUser = new UserDTO(6L, "Bob", "Bobson", "bob@email.com", "password123", 30, "Livingston", null);
         String json = mapper.writeValueAsString(newUser);
         RequestBuilder req = MockMvcRequestBuilders
                 .post("/users/register")

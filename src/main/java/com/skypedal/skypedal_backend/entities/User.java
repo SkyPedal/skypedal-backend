@@ -90,6 +90,8 @@ public class User {
 
     public String getOfficeLocation() {
         return officeLocation;
+    }
+
     public List<UsersRewards> getUsersRewards() {
         return usersRewards;
     }
@@ -100,6 +102,10 @@ public class User {
 
     public void setOfficeLocation(String officeLocation) {
         this.officeLocation = officeLocation;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
     public void setPasswordHash(String password) {

@@ -1,13 +1,10 @@
 package com.skypedal.skypedal_backend.rest;
 
-import com.skypedal.skypedal_backend.Services.UserService;
 import com.skypedal.skypedal_backend.dto.UserDTO;
-import com.skypedal.skypedal_backend.entities.User;
-import com.skypedal.skypedal_backend.services.UserService;
+import com.skypedal.skypedal_backend.Services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import java.util.*;
 
 import java.util.List;
 
@@ -21,12 +18,6 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
-    public UserDTO create(@RequestBody UserDTO user) {
-        return this.service.add(user);
-    }
-
-
     @PostMapping("/register")
     public UserDTO registerUser(@RequestBody @Validated UserDTO user) {
         return this.service.registerUser(user);
@@ -34,26 +25,26 @@ public class UserController {
 
 
     @GetMapping("/{id}")
-    public UserDTO getUser(@PathVariable int id) {
-        return this.service.getUser(id);
+    public UserDTO getUser(@PathVariable long id) {
+        return this.service.getById(id);
     }
 
     @GetMapping("/all")
     public List<UserDTO> getAllUsers() {
-        return this.service.getAllUsers();
+        return this.service.getAll();
     }
 
     @PutMapping("/{id}")
     public UserDTO updateUser(
-            @PathVariable int id,
+            @PathVariable long id,
             @RequestBody UserDTO userDTO) {
-        return this.service.updateUser(id, userDTO);
+        return this.service.updateById(id, userDTO);
     }
 
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable int id) {
-        this.service.deleteUser(id);
+    public void deleteUser(@PathVariable long id) {
+        this.service.removeById(id);
     }
 }
