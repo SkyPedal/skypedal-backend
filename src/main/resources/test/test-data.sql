@@ -1,9 +1,10 @@
-INSERT INTO `users` (`name`, `email`, `password_hash`)
-VALUES ('William Moolman', 'email1', 'hash1'),
-       ('Simonas Burkovskis', 'email2', 'hash2'),
-       ('Robert Pettit', 'email3', 'hash3'),
-       ('Vladimir Volgin', 'email4', 'hash4'),
-       ('Samuel Elliott', 'email5', 'hash5');
+INSERT INTO users (email, first_name, last_name, office_location, reward_points, password_hash)
+VALUES
+('will@sky.uk','will','moolman','Livingston',42, 'hashed_password_1'),
+('Samel@sky.com','Sam','El','Brentwood',25, 'hashed_password_2'),
+('John@email.com','John','Johnson','Leeds',25, 'test123'),
+('John2@email.com','John','Johnson','Leeds',25, 'test123'),
+('John3@email.com','John','Johnson','Leeds',25, 'test123');
 
 INSERT INTO `locations` (`name`,`lat`,`lng`,`user_id`)
 VALUES
