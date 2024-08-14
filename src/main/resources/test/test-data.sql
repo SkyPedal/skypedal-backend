@@ -1,5 +1,9 @@
-INSERT INTO `users` (`name`)
-VALUES ('William Moolman'), ('Simonas Burkovskis'), ('Robert Pettit'), ('Vladimir Volgin'), ('Samuel Elliott');
+INSERT INTO `users` (`name`, `email`, `password_hash`)
+VALUES ('William Moolman', 'email1', 'hash1'),
+       ('Simonas Burkovskis', 'email2', 'hash2'),
+       ('Robert Pettit', 'email3', 'hash3'),
+       ('Vladimir Volgin', 'email4', 'hash4'),
+       ('Samuel Elliott', 'email5', 'hash5');
 
 INSERT INTO `locations` (`name`,`lat`,`lng`,`user_id`)
 VALUES

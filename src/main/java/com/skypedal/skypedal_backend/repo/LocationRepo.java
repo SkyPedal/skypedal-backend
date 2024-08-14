@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface LocationRepo extends JpaRepository<Location, Integer> {
-    List<Location> findAllByUserId(Integer userId);
+    List<Location> findAllByUserId(Long userId);
 }

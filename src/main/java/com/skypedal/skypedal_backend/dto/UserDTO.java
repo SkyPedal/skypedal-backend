@@ -5,8 +5,10 @@ import com.skypedal.skypedal_backend.entities.User;
 import java.util.List;
 
 public class UserDTO {
-    private Integer id;
+    private Long id;
     private String name;
+    private String email;
+    private String password;
 
     private List<UsersRewardsDTO> usersRewards;
 
@@ -14,7 +16,7 @@ public class UserDTO {
         super();
     }
 
-    public UserDTO(Integer id, String name, List<UsersRewardsDTO> usersRewards) {
+    public UserDTO(Long id, String name, List<UsersRewardsDTO> usersRewards) {
         this.id = id;
         this.name = name;
         this.usersRewards = usersRewards;
@@ -23,17 +25,25 @@ public class UserDTO {
     public UserDTO(User user) {
         this.id = user.getId();
         this.name = user.getName();
+        this.email = user.getEmail();
 
         if (user.getUsersRewards() != null) {
             this.usersRewards = user.getUsersRewards().stream().map(UsersRewardsDTO::new).toList();
         }
     }
 
-    public Integer getId() {
+    public UserDTO(Long id, String name, String email, String password) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -43,6 +53,18 @@ public class UserDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public List<UsersRewardsDTO> getUsersRewards() {

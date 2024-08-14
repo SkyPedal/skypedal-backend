@@ -10,8 +10,13 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String name;
+    @Column(unique = true, nullable = false)
+    private String email;
+
+    @Column(nullable = false, name = "password_hash")
+    private String passwordHash;
 
     @OneToMany(mappedBy = "user")
     private List<UsersRewards> usersRewards;
@@ -20,7 +25,7 @@ public class User {
         super();
     }
 
-    public User(Integer id, String name) {
+    public User(Long id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -28,13 +33,14 @@ public class User {
     public User(UserDTO userDTO) {
         this.id = userDTO.getId();
         this.name = userDTO.getName();
+        this.email = userDTO.getEmail();
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -44,6 +50,22 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String password) {
+        this.passwordHash = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public List<UsersRewards> getUsersRewards() {

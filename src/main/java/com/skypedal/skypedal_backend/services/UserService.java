@@ -8,6 +8,7 @@ import com.skypedal.skypedal_backend.exceptions.UserNotFoundException;
 import com.skypedal.skypedal_backend.exceptions.UnauthenticatedUserException;
 import com.skypedal.skypedal_backend.exceptions.UserNotFoundException;
 import com.skypedal.skypedal_backend.repo.UserRepo;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,8 +17,11 @@ import java.util.List;
 public class UserService {
     private final UserRepo repo;
 
-    public UserService(UserRepo repo) {
+    private final PasswordEncoder passwordEncoder;
+
+    public UserService(UserRepo repo, PasswordEncoder passwordEncoder) {
         this.repo = repo;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserDTO add(UserDTO userDTO) {
@@ -25,24 +29,35 @@ public class UserService {
         return new UserDTO(user);
     }
 
+    public List<UserDTO> getAll() {
+        return this.repo.findAll().stream().map(UserDTO::new).toList();
+    }
+
+    public UserDTO registerUser(UserDTO user) {
+        User newUser = new User(user);
+        newUser.setPasswordHash(this.passwordEncoder.encode(user.getPassword()));
+        this.repo.save(newUser);
+        return user;
+    }
+
     public List<UserDTO> get() {
         List<User> users = this.repo.findAll();
         return users.stream().map(UserDTO::new).toList();
     }
 
-    public UserDTO getById(Integer userId) {
+    public UserDTO getById(Long userId) {
         User user = this.repo.findById(userId).orElseThrow(UserNotFoundException::new);
         return new UserDTO(user);
     }
 
-    public UserDTO removeById(Integer userId) {
+    public UserDTO removeById(Long userId) {
         User user = this.repo.findById(userId).orElseThrow(UserNotFoundException::new);
         this.repo.deleteById(userId);
         return new UserDTO(user);
 
     }
 
-    public UserDTO updateById(Integer userId, UserDTO newUser) {
+    public UserDTO updateById(Long userId, UserDTO newUser) {
         User user = this.repo.findById(userId).orElseThrow(UserNotFoundException::new);
         newUser.setId(user.getId());
         User savedUser = this.repo.save(new User(newUser));

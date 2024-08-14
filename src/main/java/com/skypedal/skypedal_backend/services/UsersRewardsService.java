@@ -39,7 +39,7 @@ public class UsersRewardsService {
         return new UsersRewardsDTO(found);
     }
 
-    public List<UsersRewardsDTO> getUserRewardsByUserId(int userId) {
+    public List<UsersRewardsDTO> getUserRewardsByUserId(long userId) {
         return this.repo.findAllByUserId(userId).stream().map(UsersRewardsDTO::new).toList();
     }
 }

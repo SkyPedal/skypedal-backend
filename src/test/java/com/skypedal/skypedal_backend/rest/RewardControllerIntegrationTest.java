@@ -23,7 +23,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc // creates the mockmvc object
+@AutoConfigureMockMvc(addFilters = false) // creates the mockmvc object
 @Sql(scripts = {"classpath:test/test-schema.sql", "classpath:test/test-data.sql"},
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @ActiveProfiles("test")
@@ -61,7 +61,7 @@ public class RewardControllerIntegrationTest {
 
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
         List<UsersRewardsDTO> usersRewardsDTOList = List.of(
-                new UsersRewardsDTO(4, "Thursday", "2024/09/06 T 12:00", false, 4, 1)
+                new UsersRewardsDTO(4, "Thursday", "2024/09/06 T 12:00", false, 4, 1L)
         );
         RewardDTO found = new RewardDTO(4, "Free Car", "1 delicious free car of your choosing!", 100000, 1, "34552345-23452345-23452345.jpg", true, usersRewardsDTOList);
         String foundAsJSON = this.mapper.writeValueAsString(found);
@@ -103,7 +103,7 @@ public class RewardControllerIntegrationTest {
 
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
         List<UsersRewardsDTO> usersRewardsDTOS = List.of(
-                new UsersRewardsDTO(3, "Thursday", "2024/09/06 T 12:00", false, 3, 1)
+                new UsersRewardsDTO(3, "Thursday", "2024/09/06 T 12:00", false, 3, 1L)
         );
         RewardDTO createdReward = new RewardDTO(3, "Free Brownie", "1 delicious free cookie of your choosing!", 500, 5, "34552345-23452345-23452345.jpg", true, usersRewardsDTOS);
         String createdRewardAsJSON = this.mapper.writeValueAsString(createdReward);

@@ -20,28 +20,28 @@ public class RouteController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public RouteDTO create(@RequestBody NewRouteDTO route, @RequestParam Integer userId) {
+    public RouteDTO create(@RequestBody NewRouteDTO route, @RequestParam Long userId) {
         return this.service.add(route, userId);
     }
 
     @GetMapping("")
-    public List<RouteDTO> getAll(@RequestParam Integer userId) {
+    public List<RouteDTO> getAll(@RequestParam Long userId) {
         return this.service.get(userId);
     }
 
     @GetMapping("/{id}")
-    public RouteDTO get(@PathVariable Integer id, @RequestParam Integer userId) {
+    public RouteDTO get(@PathVariable Integer id, @RequestParam Long userId) {
         return this.service.getById(id, userId);
     }
 
     @GetMapping("/start/{startId}/end/{endId}")
     public RouteDTO getByEnds(@PathVariable Integer startId, @PathVariable Integer endId,
-                              @RequestParam Integer userId) {
+                              @RequestParam Long userId) {
         return this.service.getByEnds(startId, endId, userId);
     }
 
     @DeleteMapping("/{id}")
-    public RouteDTO delete(@PathVariable Integer id, @RequestParam Integer userId) {
+    public RouteDTO delete(@PathVariable Integer id, @RequestParam Long userId) {
         return this.service.removeById(id, userId);
     }
 }
