@@ -15,7 +15,7 @@ public class User {
     private String email;
     private String firstName;
     private String lastName;
-    private int rewardPoints;
+    private Integer rewardPoints;
     private String officeLocation;
 
     @Column(nullable = false, name = "password_hash")
@@ -79,11 +79,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public int getRewardPoints() {
+    public Integer getRewardPoints() {
         return rewardPoints;
     }
 
-    public void setRewardPoints(int rewardPoints) {
+    public void setRewardPoints(Integer rewardPoints) {
         this.rewardPoints = rewardPoints;
     }
 
