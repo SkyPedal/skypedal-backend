@@ -9,7 +9,7 @@ public class UserDTO {
     private String lastName;
     private Long id;
     private String email;
-    private int rewardPoints;
+    private Integer rewardPoints;
     private String officeLocation;
     private String password;
 
@@ -25,7 +25,11 @@ public class UserDTO {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.rewardPoints = rewardPoints;
+        if (rewardPoints==null) {
+            this.rewardPoints = 0;
+        } else {
+            this.rewardPoints = rewardPoints;
+        }
         this.officeLocation = officeLocation;
 
         if (usersRewards != null) {
@@ -87,7 +91,7 @@ public class UserDTO {
         this.email = email;
     }
 
-    public int getRewardPoints() {
+    public Integer getRewardPoints() {
         return rewardPoints;
     }
 
