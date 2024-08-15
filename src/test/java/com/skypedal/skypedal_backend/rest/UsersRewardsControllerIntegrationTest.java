@@ -158,7 +158,7 @@ public class UsersRewardsControllerIntegrationTest {
 
         RequestBuilder req2 = MockMvcRequestBuilders.get("/users_rewards/1");
         ResultMatcher checkStatus2 = MockMvcResultMatchers.status().isOk();
-        UsersRewardsDTO found = new UsersRewardsDTO(1, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, true, 1, 1);
+        UsersRewardsDTO found = new UsersRewardsDTO(1, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, true, 1, 1L);
         found.setRewardName("Free Cake");
         String foundAsJSON = this.mapper.writeValueAsString(found);
         ResultMatcher checkBody = MockMvcResultMatchers.content().json(foundAsJSON);

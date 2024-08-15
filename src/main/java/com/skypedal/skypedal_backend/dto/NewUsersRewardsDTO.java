@@ -3,13 +3,13 @@ package com.skypedal.skypedal_backend.dto;
 public class NewUsersRewardsDTO {
 
     private Integer rewardId;
-    private Integer userId;
+    private Long userId;
 
     public NewUsersRewardsDTO() {
         super();
     }
 
-    public NewUsersRewardsDTO(Integer rewardId, Integer userId) {
+    public NewUsersRewardsDTO(Integer rewardId, Long userId) {
         this.rewardId = rewardId;
         this.userId = userId;
     }
@@ -22,11 +22,11 @@ public class NewUsersRewardsDTO {
         this.rewardId = rewardId;
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 }
