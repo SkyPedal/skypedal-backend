@@ -113,6 +113,7 @@ public class UsersRewardsControllerIntegrationTest {
 
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
         UsersRewardsDTO found = new UsersRewardsDTO(4, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, false, 4, 1);
+        found.setRewardName("Free Car");
         String foundAsJSON = this.mapper.writeValueAsString(found);
         ResultMatcher checkBody = MockMvcResultMatchers.content().json(foundAsJSON);
 
@@ -132,6 +133,7 @@ public class UsersRewardsControllerIntegrationTest {
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
 
         UsersRewardsDTO found = new UsersRewardsDTO(5, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, false, 1, 2);
+        found.setRewardName("Free Cake");
         List<UsersRewardsDTO> foundList = List.of(found);
         String foundAsJSON = this.mapper.writeValueAsString(foundList);
         ResultMatcher checkBody = MockMvcResultMatchers.content().json(foundAsJSON);
@@ -157,6 +159,7 @@ public class UsersRewardsControllerIntegrationTest {
         RequestBuilder req2 = MockMvcRequestBuilders.get("/users_rewards/1");
         ResultMatcher checkStatus2 = MockMvcResultMatchers.status().isOk();
         UsersRewardsDTO found = new UsersRewardsDTO(1, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, true, 1, 1);
+        found.setRewardName("Free Cake");
         String foundAsJSON = this.mapper.writeValueAsString(found);
         ResultMatcher checkBody = MockMvcResultMatchers.content().json(foundAsJSON);
 

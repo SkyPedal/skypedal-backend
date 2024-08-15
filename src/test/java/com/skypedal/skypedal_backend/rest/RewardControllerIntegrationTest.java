@@ -17,9 +17,7 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -63,9 +61,10 @@ public class RewardControllerIntegrationTest {
         RequestBuilder req = MockMvcRequestBuilders.get("/rewards/4");
 
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
-        List<UsersRewardsDTO> usersRewardsDTOList = List.of(
-                new UsersRewardsDTO(4, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, false, 4, 1)
-        );
+        UsersRewardsDTO newUR = new UsersRewardsDTO(4, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, false, 4, 1);
+        newUR.setRewardName("Free Car");
+        List<UsersRewardsDTO> usersRewardsDTOList = List.of(newUR);
+
         RewardDTO found = new RewardDTO(4, "Free Car", "1 delicious free car of your choosing!", 100000, 1, "34552345-23452345-23452345.jpg", true, usersRewardsDTOList);
         String foundAsJSON = this.mapper.writeValueAsString(found);
         ResultMatcher checkBody = MockMvcResultMatchers.content().json(foundAsJSON);
@@ -105,9 +104,10 @@ public class RewardControllerIntegrationTest {
                 .param("active", "true");
 
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
-        List<UsersRewardsDTO> usersRewardsDTOS = List.of(
-                new UsersRewardsDTO(3, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, false, 3, 1)
-        );
+        UsersRewardsDTO newUR = new UsersRewardsDTO(3, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, false, 3, 1);
+        newUR.setRewardName("Free Brownie");
+        List<UsersRewardsDTO> usersRewardsDTOS = List.of(newUR);
+
         RewardDTO createdReward = new RewardDTO(3, "Free Brownie", "1 delicious free cookie of your choosing!", 500, 5, "34552345-23452345-23452345.jpg", true, usersRewardsDTOS);
         String createdRewardAsJSON = this.mapper.writeValueAsString(createdReward);
         ResultMatcher checkBody = MockMvcResultMatchers.content().json(createdRewardAsJSON);

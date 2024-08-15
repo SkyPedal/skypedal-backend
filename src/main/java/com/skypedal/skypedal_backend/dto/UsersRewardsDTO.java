@@ -15,6 +15,7 @@ public class UsersRewardsDTO {
 
     private Integer rewardId;
     private Integer userId;
+    private String rewardName;
 
     public UsersRewardsDTO() {
         super();
@@ -37,6 +38,7 @@ public class UsersRewardsDTO {
 
         if (usersRewards.getReward() != null) this.rewardId = usersRewards.getReward().getId();
         if (usersRewards.getUser() != null) this.userId = usersRewards.getUser().getId();
+        if (usersRewards.getReward() != null) this.rewardName = usersRewards.getReward().getName();
     }
 
     public Integer getId() {
@@ -85,5 +87,13 @@ public class UsersRewardsDTO {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public String getRewardName() {
+        return rewardName;
+    }
+
+    public void setRewardName(String rewardName) {
+        this.rewardName = rewardName;
     }
 }
