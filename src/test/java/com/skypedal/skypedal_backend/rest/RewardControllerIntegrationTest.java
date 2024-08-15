@@ -65,7 +65,7 @@ public class RewardControllerIntegrationTest {
         newUR.setRewardName("Free Car");
         List<UsersRewardsDTO> usersRewardsDTOList = List.of(newUR);
 
-        RewardDTO found = new RewardDTO(4, "Free Car", "1 delicious free car of your choosing!", 100000, 1, "34552345-23452345-23452345.jpg", true, usersRewardsDTOList);
+        RewardDTO found = new RewardDTO(4, "Free Car", "1 delicious free car of your choosing!", 100, 1, "34552345-23452345-23452345.jpg", true, usersRewardsDTOList);
         String foundAsJSON = this.mapper.writeValueAsString(found);
         ResultMatcher checkBody = MockMvcResultMatchers.content().json(foundAsJSON);
 
@@ -108,7 +108,7 @@ public class RewardControllerIntegrationTest {
         newUR.setRewardName("Free Brownie");
         List<UsersRewardsDTO> usersRewardsDTOS = List.of(newUR);
 
-        RewardDTO createdReward = new RewardDTO(3, "Free Brownie", "1 delicious free cookie of your choosing!", 500, 5, "34552345-23452345-23452345.jpg", true, usersRewardsDTOS);
+        RewardDTO createdReward = new RewardDTO(3, "Free Brownie", "1 delicious free cookie of your choosing!", 15, 5, "34552345-23452345-23452345.jpg", true, usersRewardsDTOS);
         String createdRewardAsJSON = this.mapper.writeValueAsString(createdReward);
         ResultMatcher checkBody = MockMvcResultMatchers.content().json(createdRewardAsJSON);
 
@@ -124,7 +124,7 @@ public class RewardControllerIntegrationTest {
                 .param("active", "true");
 
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
-        RewardDTO createdReward = new RewardDTO(5, "Free Crown", "1 delicious free crown of your choosing!", 5000000, 1, "34552345-23452345-23452345.jpg", true, new ArrayList<>());
+        RewardDTO createdReward = new RewardDTO(5, "Free Crown", "1 delicious free crown of your choosing!", 500, 1, "34552345-23452345-23452345.jpg", true, new ArrayList<>());
         String createdRewardAsJSON = this.mapper.writeValueAsString(createdReward);
         ResultMatcher checkBody = MockMvcResultMatchers.content().json(createdRewardAsJSON);
 

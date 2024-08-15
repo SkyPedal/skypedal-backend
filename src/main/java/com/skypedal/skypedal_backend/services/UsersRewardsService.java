@@ -2,8 +2,11 @@ package com.skypedal.skypedal_backend.services;
 
 import com.skypedal.skypedal_backend.dto.NewUsersRewardsDTO;
 import com.skypedal.skypedal_backend.dto.RewardDTO;
+import com.skypedal.skypedal_backend.dto.UserDTO;
 import com.skypedal.skypedal_backend.dto.UsersRewardsDTO;
 import com.skypedal.skypedal_backend.entities.UsersRewards;
+import com.skypedal.skypedal_backend.exceptions.RewardNotAvailableException;
+import com.skypedal.skypedal_backend.exceptions.UserIsTooPoorException;
 import com.skypedal.skypedal_backend.exceptions.UsersRewardsNotFoundException;
 import com.skypedal.skypedal_backend.rest.RewardController;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -19,20 +22,34 @@ public class UsersRewardsService {
 
     private UsersRewardsRepo repo;
     private RewardService rewardService;
+    private UserService userService;
 
-    public UsersRewardsService(UsersRewardsRepo repo, RewardService rewardService) {
+    public UsersRewardsService(UsersRewardsRepo repo, RewardService rewardService, UserService userService) {
         this.repo = repo;
         this.rewardService = rewardService;
+        this.userService = userService;
     }
 
     public UsersRewardsDTO createReward(NewUsersRewardsDTO newUserReward) {
         UsersRewards toSave = new UsersRewards(newUserReward);
-        this.repo.save(toSave);
 
         /* there is now one less available reward remaining */
         rewardService.redeemReward(toSave.getReward().getId());
 
-        return new UsersRewardsDTO(toSave);
+        /* user pays for the reward if they have enough points */
+        Integer rewardCost = rewardService.getReward(toSave.getReward().getId()).getPointCost();
+        Integer userPoints = userService.getById(toSave.getUser().getId()).getRewardPoints();
+        Integer remainingPoints = userPoints - rewardCost;
+
+        if (remainingPoints < 0) throw new UserIsTooPoorException();
+        else {
+            UserDTO newUser = userService.getById(toSave.getUser().getId());
+            newUser.setRewardPoints(remainingPoints);
+            userService.updateById(newUser.getId(), newUser);
+            this.repo.save(toSave);
+
+            return new UsersRewardsDTO(toSave);
+        }
     }
 
     public UsersRewardsDTO getUserReward(int id) {

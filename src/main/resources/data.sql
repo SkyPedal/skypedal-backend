@@ -17,10 +17,10 @@ VALUES
 
 INSERT INTO `rewards` (`name`,`description`,`point_cost`,`number_available`, `image_link`, `active`)
 VALUES
-('Free Cake', '1 delicious free cake of your choosing!', 1000, 10, '34552345-23452345-23452345.jpg', TRUE),
-('Free Coffee', '1 delicious free coffee of your choosing!', 750, 25, '34552345-23452345-23452345.jpg', TRUE),
-('Free Cookie', '1 delicious free cookie of your choosing!', 500, 50, '34552345-23452345-23452345.jpg', FALSE),
-('Free Car', '1 delicious free car of your choosing!', 100000, 1, '34552345-23452345-23452345.jpg', TRUE);
+('Free Cake', '1 delicious free cake of your choosing!', 10, 10, '34552345-23452345-23452345.jpg', TRUE),
+('Free Coffee', '1 delicious free coffee of your choosing!', 20, 25, '34552345-23452345-23452345.jpg', TRUE),
+('Free Cookie', '1 delicious free cookie of your choosing!', 15, 50, '34552345-23452345-23452345.jpg', FALSE),
+('Free Car', '1 delicious free car of your choosing!', 100, 1, '34552345-23452345-23452345.jpg', TRUE);
 
 INSERT INTO `users_rewards` (`reward_id`,`user_id`,`date_redeemed`,`date_expiry`,`has_used`)
 VALUES
