@@ -31,7 +31,7 @@ public class MyUserDetailsService implements UserDetailsService {
         final User client = repo.findByEmail(username).orElseThrow(
                 () -> new UsernameNotFoundException("User " + username + " not found"));
         final List<SimpleGrantedAuthority> roles = Collections.singletonList(new SimpleGrantedAuthority(UserRoles.ROLE_USER));
-        return new MyUserDetails(client.getId(), username, client.getPasswordHash(), roles);
+        return new MyUserDetails(client.getId(), username, client.getPassword_Hash(), roles);
     }
 
 }

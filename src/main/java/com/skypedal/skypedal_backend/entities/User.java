@@ -11,53 +11,47 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
     @Column(unique = true, nullable = false)
     private String email;
+    private String firstName;
+    private String lastName;
+    private int rewardPoints;
+    private String officeLocation;
 
     @Column(nullable = false, name = "password_hash")
     private String passwordHash;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private List<UsersRewards> usersRewards;
 
     public User() {
         super();
     }
 
-    public User(Long id, String name) {
+    public User(Long id, String email, String password, String firstName, String lastName, Integer rewardPoints, String officeLocation) {
+        this.email = email;
         this.id = id;
-        this.name = name;
+        this.firstName = firstName;
+        this.rewardPoints = rewardPoints;
+        this.officeLocation = officeLocation;
     }
 
     public User(UserDTO userDTO) {
         this.id = userDTO.getId();
-        this.name = userDTO.getName();
+        this.firstName = userDTO.getFirstName();
+        this.lastName = userDTO.getLastName();
         this.email = userDTO.getEmail();
+        this.rewardPoints = userDTO.getRewardPoints();
+        this.officeLocation = userDTO.getOfficeLocation();
     }
-
-    public Long getId() {
-        return id;
-    }
+    // Getters and Setters
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
-    public void setPasswordHash(String password) {
-        this.passwordHash = password;
+    public Long getId() {
+        return id;
     }
 
     public String getEmail() {
@@ -68,11 +62,53 @@ public class User {
         this.email = email;
     }
 
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public int getRewardPoints() {
+        return rewardPoints;
+    }
+
+    public void setRewardPoints(int rewardPoints) {
+        this.rewardPoints = rewardPoints;
+    }
+
+
+    public String getOfficeLocation() {
+        return officeLocation;
+    }
+
     public List<UsersRewards> getUsersRewards() {
         return usersRewards;
     }
 
     public void setUsersRewards(List<UsersRewards> usersRewards) {
         this.usersRewards = usersRewards;
+    }
+
+    public void setOfficeLocation(String officeLocation) {
+        this.officeLocation = officeLocation;
+    }
+
+    public String getPassword_Hash() {
+        return passwordHash;
+    }
+
+    public void setPassword_Hash(String password) {
+        this.passwordHash = password;
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -20,8 +21,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @SpringBootTest(webEnvironment =  SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@Sql(scripts = {"classpath:/test/test-schema.sql", "classpath:test/test-data.sql"},
+@Sql(scripts = {"classpath:test/test-schema.sql", "classpath:test/test-data.sql"},
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@ActiveProfiles("test")
 public class LoginIntegrationTest {
     @Autowired
     private MockMvc mvc;
@@ -31,14 +33,14 @@ public class LoginIntegrationTest {
 
     @Test
     void testRegister() throws Exception {
-        UserDTO newUser = new UserDTO(6L, "John", "John@email.com", "test123");
+        UserDTO newUser = new UserDTO(6L, "John", "Johnson", "John@email.com", "test123", 25, "Leeds", null);
         String json = mapper.writeValueAsString(newUser);
         RequestBuilder req = MockMvcRequestBuilders
                 .post("/users/register")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON);
 
-        ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
+        ResultMatcher checkStatus = MockMvcResultMatchers.status().isCreated();
         ResultMatcher checkBody = MockMvcResultMatchers.content().json(json);
 
         this.mvc.perform(req).andExpect(checkStatus).andExpect(checkBody);
@@ -46,7 +48,7 @@ public class LoginIntegrationTest {
 
     @Test
     void testAuthenticate() throws Exception {
-        UserDTO newUser = new UserDTO(6L, "Bob", "bob@email.com", "password123");
+        UserDTO newUser = new UserDTO(6L, "Bob", "Bobson", "bob@email.com", "password123", 30, "Livingston", null);
         String json = mapper.writeValueAsString(newUser);
         RequestBuilder req = MockMvcRequestBuilders
                 .post("/users/register")
