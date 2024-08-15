@@ -39,6 +39,7 @@ public class UsersRewardsService {
         /* user pays for the reward if they have enough points */
         Integer rewardCost = rewardService.getReward(toSave.getReward().getId()).getPointCost();
         Integer userPoints = userService.getById(toSave.getUser().getId()).getRewardPoints();
+        System.out.println("URS"+rewardCost+" "+userPoints);
         Integer remainingPoints = userPoints - rewardCost;
 
         if (remainingPoints < 0) throw new UserIsTooPoorException();

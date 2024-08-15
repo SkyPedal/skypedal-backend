@@ -5,7 +5,9 @@ import com.skypedal.skypedal_backend.dto.NewUsersRewardsDTO;
 import com.skypedal.skypedal_backend.dto.RewardDTO;
 import com.skypedal.skypedal_backend.dto.UsersRewardsDTO;
 import com.skypedal.skypedal_backend.test.Constants;
+import com.skypedal.skypedal_backend.utils.AuthenticationResponse;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,10 +25,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc(addFilters = false) // creates the mockmvc object
+@AutoConfigureMockMvc // creates the mockmvc object
 @Sql(scripts = {"classpath:test/test-schema.sql", "classpath:test/test-data.sql"},
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @ActiveProfiles("test")
@@ -37,16 +40,39 @@ public class UsersRewardsControllerIntegrationTest {
     @Autowired
     private ObjectMapper mapper;
 
+    private String token1;
+    private String token2;
+
+    @BeforeEach
+    void login() throws Exception {
+        String response = this.mvc.perform(
+                MockMvcRequestBuilders
+                        .post("/authenticate")
+                        .content("{\"login\":\"will@sky.uk\",\"password\":\"password\"}")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andReturn().getResponse().getContentAsString();
+
+        AuthenticationResponse authenticationResponse = this.mapper.readValue(response, AuthenticationResponse.class);
+        this.token1 = authenticationResponse.getAccessToken();
+
+        String response2 = this.mvc.perform(
+                MockMvcRequestBuilders
+                        .post("/authenticate")
+                        .content("{\"login\":\"Samel@sky.com\",\"password\":\"password\"}")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andReturn().getResponse().getContentAsString();
+
+        AuthenticationResponse authenticationResponse2 = this.mapper.readValue(response2, AuthenticationResponse.class);
+        this.token2 = authenticationResponse2.getAccessToken();
+    }
+
 
     /* test create method */
     @Test
     void testCreate() throws Exception {
-        NewUsersRewardsDTO newUR = new NewUsersRewardsDTO( 1, 1L);
-        String newRewardAsJSON = this.mapper.writeValueAsString(newUR);
         RequestBuilder req = MockMvcRequestBuilders
-                .post("/users_rewards")
-                .content(newRewardAsJSON)
-                .contentType(MediaType.APPLICATION_JSON);
+                .post("/users_rewards/redeem/1")
+                .header("Authorization","Bearer "+this.token1);
 
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isCreated();
         UsersRewardsDTO createdUR = new UsersRewardsDTO(11, LocalDateTime.now(), LocalDateTime.now().plusDays(12), false, 1, 1L);
@@ -90,15 +116,17 @@ public class UsersRewardsControllerIntegrationTest {
     /* test that available number decreases by 1 */
     @Test
     void testAvailableNumberDecreasesBy1() throws Exception {
-        NewUsersRewardsDTO newUR = new NewUsersRewardsDTO( 4, 2L);
-        String newRewardAsJSON = this.mapper.writeValueAsString(newUR);
+//        NewUsersRewardsDTO newUR = new NewUsersRewardsDTO( 4, 2L);
+//        String newRewardAsJSON = this.mapper.writeValueAsString(newUR);
         RequestBuilder req = MockMvcRequestBuilders
-                .post("/users_rewards")
-                .content(newRewardAsJSON)
-                .contentType(MediaType.APPLICATION_JSON);
+                .post("/users_rewards/redeem/4")
+                .header("Authorization","Bearer "+this.token1);
         this.mvc.perform(req);
+        System.out.println(token1);
 
-        RequestBuilder req2 = MockMvcRequestBuilders.get("/rewards/4");
+        RequestBuilder req2 = MockMvcRequestBuilders
+                .get("/rewards/4")
+                .header("Authorization","Bearer "+this.token1);
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
 
         String response = this.mvc.perform(req2).andExpect(checkStatus).andReturn().getResponse().getContentAsString();
@@ -109,7 +137,9 @@ public class UsersRewardsControllerIntegrationTest {
     /* test get methods */
     @Test
     void testGetById() throws Exception {
-        RequestBuilder req = MockMvcRequestBuilders.get("/users_rewards/4");
+        RequestBuilder req = MockMvcRequestBuilders
+                .get("/users_rewards/4")
+                .header("Authorization","Bearer "+this.token1);
 
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
         UsersRewardsDTO found = new UsersRewardsDTO(4, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, false, 4, 1L);
@@ -122,14 +152,18 @@ public class UsersRewardsControllerIntegrationTest {
     }
     @Test
     void testGetByIdNotFound() throws Exception {
-        RequestBuilder req = MockMvcRequestBuilders.get("/users_rewards/40");
+        RequestBuilder req = MockMvcRequestBuilders
+                .get("/users_rewards/40")
+                .header("Authorization","Bearer "+this.token1);
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isNotFound();
 
         this.mvc.perform(req).andExpect(checkStatus);
     }
     @Test
     void testGetActiveUsersRewards() throws Exception {
-        RequestBuilder req = MockMvcRequestBuilders.get("/users_rewards/user/2");
+        RequestBuilder req = MockMvcRequestBuilders
+                .get("/users_rewards/user")
+                .header("Authorization","Bearer "+this.token2);
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
 
         UsersRewardsDTO found = new UsersRewardsDTO(5, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, false, 1, 2L);
@@ -143,7 +177,9 @@ public class UsersRewardsControllerIntegrationTest {
     }
     @Test
     void testGetActiveUsersRewardsSize() throws Exception {
-        RequestBuilder req = MockMvcRequestBuilders.get("/users_rewards/user/1");
+        RequestBuilder req = MockMvcRequestBuilders
+                .get("/users_rewards/user")
+                .header("Authorization","Bearer "+this.token1);
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
 
         this.mvc.perform(req).andExpect(jsonPath("$", hasSize(4))).andExpect(checkStatus);
@@ -152,11 +188,15 @@ public class UsersRewardsControllerIntegrationTest {
     /* test use method */
     @Test
     void testUseMethod() throws Exception {
-        RequestBuilder req = MockMvcRequestBuilders.patch("/users_rewards/1");
+        RequestBuilder req = MockMvcRequestBuilders
+                .patch("/users_rewards/1")
+                .header("Authorization","Bearer "+this.token1);
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
         this.mvc.perform(req).andExpect(checkStatus);
 
-        RequestBuilder req2 = MockMvcRequestBuilders.get("/users_rewards/1");
+        RequestBuilder req2 = MockMvcRequestBuilders
+                .get("/users_rewards/1")
+                .header("Authorization","Bearer "+this.token1);
         ResultMatcher checkStatus2 = MockMvcResultMatchers.status().isOk();
         UsersRewardsDTO found = new UsersRewardsDTO(1, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, true, 1, 1L);
         found.setRewardName("Free Cake");
