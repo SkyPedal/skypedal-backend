@@ -1,8 +1,12 @@
 package com.skypedal.skypedal_backend.entities;
 
 
+import com.skypedal.skypedal_backend.dto.NewUsersRewardsDTO;
 import com.skypedal.skypedal_backend.dto.UsersRewardsDTO;
 import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "users_rewards")
@@ -12,12 +16,8 @@ public class UsersRewards {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
     private Integer id;
 
-
-
-
-    // CHANGE TO DATETIME OBJECTS
-    private String dateRedeemed;
-    private String dateExpiry;
+    private LocalDateTime dateRedeemed;
+    private LocalDateTime dateExpiry;
     private boolean hasUsed;
 
     @ManyToOne(cascade = CascadeType.MERGE)
@@ -29,11 +29,26 @@ public class UsersRewards {
         super();
     }
 
-    public UsersRewards(Integer id, String dateRedeemed, String dateExpiry, boolean hasUsed) {
+    public UsersRewards(Integer id, LocalDateTime dateRedeemed, LocalDateTime dateExpiry, boolean hasUsed) {
         this.id = id;
         this.dateRedeemed = dateRedeemed;
         this.dateExpiry = dateExpiry;
         this.hasUsed = hasUsed;
+    }
+
+    public UsersRewards(NewUsersRewardsDTO newUserReward) {
+        this.dateRedeemed = LocalDateTime.now();
+        this.dateExpiry = LocalDateTime.now().plusDays(12);
+        this.hasUsed = false;
+
+        if (newUserReward.getUserId() != null) {
+            this.user = new User();
+            this.user.setId(newUserReward.getUserId());
+        }
+        if (newUserReward.getRewardId() != null) {
+            this.reward = new Reward();
+            this.reward.setId(newUserReward.getRewardId());
+        }
     }
 
     public UsersRewards(UsersRewardsDTO newUserReward) {
@@ -61,19 +76,19 @@ public class UsersRewards {
         this.id = id;
     }
 
-    public String getDateRedeemed() {
+    public LocalDateTime getDateRedeemed() {
         return dateRedeemed;
     }
 
-    public void setDateRedeemed(String dateRedeemed) {
+    public void setDateRedeemed(LocalDateTime dateRedeemed) {
         this.dateRedeemed = dateRedeemed;
     }
 
-    public String getDateExpiry() {
+    public LocalDateTime getDateExpiry() {
         return dateExpiry;
     }
 
-    public void setDateExpiry(String dateExpiry) {
+    public void setDateExpiry(LocalDateTime dateExpiry) {
         this.dateExpiry = dateExpiry;
     }
 

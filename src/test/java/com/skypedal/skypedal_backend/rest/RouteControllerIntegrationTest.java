@@ -32,8 +32,6 @@ import java.util.List;
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @ActiveProfiles("test")
 public class RouteControllerIntegrationTest {
-    @Autowired
-    private WebApplicationContext context;
 
     @Autowired
     private MockMvc mvc;

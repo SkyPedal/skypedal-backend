@@ -2,22 +2,26 @@ package com.skypedal.skypedal_backend.dto;
 
 import com.skypedal.skypedal_backend.entities.UsersRewards;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 public class UsersRewardsDTO {
 
     private Integer id;
 
-    private String dateRedeemed;
-    private String dateExpiry;
+    private LocalDateTime dateRedeemed;
+    private LocalDateTime dateExpiry;
     private boolean hasUsed;
 
     private Integer rewardId;
     private Long userId;
+    private String rewardName;
 
     public UsersRewardsDTO() {
         super();
     }
 
-    public UsersRewardsDTO(Integer id, String dateRedeemed, String dateExpiry, boolean hasUsed, Integer rewardId, Long userId) {
+    public UsersRewardsDTO(Integer id, LocalDateTime dateRedeemed, LocalDateTime dateExpiry, boolean hasUsed, Integer rewardId, Long userId) {
         this.id = id;
         this.dateRedeemed = dateRedeemed;
         this.dateExpiry = dateExpiry;
@@ -34,6 +38,7 @@ public class UsersRewardsDTO {
 
         if (usersRewards.getReward() != null) this.rewardId = usersRewards.getReward().getId();
         if (usersRewards.getUser() != null) this.userId = usersRewards.getUser().getId();
+        if (usersRewards.getReward() != null) this.rewardName = usersRewards.getReward().getName();
     }
 
     public Integer getId() {
@@ -44,19 +49,19 @@ public class UsersRewardsDTO {
         this.id = id;
     }
 
-    public String getDateRedeemed() {
+    public LocalDateTime getDateRedeemed() {
         return dateRedeemed;
     }
 
-    public void setDateRedeemed(String dateRedeemed) {
+    public void setDateRedeemed(LocalDateTime dateRedeemed) {
         this.dateRedeemed = dateRedeemed;
     }
 
-    public String getDateExpiry() {
+    public LocalDateTime getDateExpiry() {
         return dateExpiry;
     }
 
-    public void setDateExpiry(String dateExpiry) {
+    public void setDateExpiry(LocalDateTime dateExpiry) {
         this.dateExpiry = dateExpiry;
     }
 
@@ -82,5 +87,13 @@ public class UsersRewardsDTO {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getRewardName() {
+        return rewardName;
+    }
+
+    public void setRewardName(String rewardName) {
+        this.rewardName = rewardName;
     }
 }

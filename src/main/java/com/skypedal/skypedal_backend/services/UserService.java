@@ -50,8 +50,8 @@ public class UserService {
 
     public UserDTO updateById(Long userId, UserDTO newUser) {
         User user = this.repo.findById(userId).orElseThrow(UserNotFoundException::new);
-        newUser.setId(user.getId());
-        User savedUser = this.repo.save(new User(newUser));
+        user.setRewardPoints(newUser.getRewardPoints());
+        User savedUser = this.repo.save(user);
         return new UserDTO(savedUser);
     }
 }
