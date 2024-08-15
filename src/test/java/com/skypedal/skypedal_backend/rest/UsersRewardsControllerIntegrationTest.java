@@ -26,7 +26,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc // creates the mockmvc object
+@AutoConfigureMockMvc(addFilters = false) // creates the mockmvc object
 @Sql(scripts = {"classpath:test/test-schema.sql", "classpath:test/test-data.sql"},
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @ActiveProfiles("test")
@@ -41,7 +41,7 @@ public class UsersRewardsControllerIntegrationTest {
     /* test create method */
     @Test
     void testCreate() throws Exception {
-        NewUsersRewardsDTO newUR = new NewUsersRewardsDTO( 1, 1);
+        NewUsersRewardsDTO newUR = new NewUsersRewardsDTO( 1, 1L);
         String newRewardAsJSON = this.mapper.writeValueAsString(newUR);
         RequestBuilder req = MockMvcRequestBuilders
                 .post("/users_rewards")
@@ -49,7 +49,7 @@ public class UsersRewardsControllerIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON);
 
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isCreated();
-        UsersRewardsDTO createdUR = new UsersRewardsDTO(11, LocalDateTime.now(), LocalDateTime.now().plusDays(12), false, 1, 1);
+        UsersRewardsDTO createdUR = new UsersRewardsDTO(11, LocalDateTime.now(), LocalDateTime.now().plusDays(12), false, 1, 1L);
         LocalDateTime earlier = LocalDateTime.now().minusHours(1);
         LocalDateTime later = LocalDateTime.now().plusHours(1);
 
@@ -64,7 +64,7 @@ public class UsersRewardsControllerIntegrationTest {
     /* test create method for unavailable rewards */
     @Test
     void testCreateUnavailable() throws Exception {
-        NewUsersRewardsDTO newUR = new NewUsersRewardsDTO( 5, 1);
+        NewUsersRewardsDTO newUR = new NewUsersRewardsDTO( 5, 1L);
         String newRewardAsJSON = this.mapper.writeValueAsString(newUR);
         RequestBuilder req = MockMvcRequestBuilders
                 .post("/users_rewards")
@@ -74,7 +74,7 @@ public class UsersRewardsControllerIntegrationTest {
         this.mvc.perform(req);
 
         /* Claiming the same reward twice, even though it is available once */
-        NewUsersRewardsDTO newUR2 = new NewUsersRewardsDTO( 5, 2);
+        NewUsersRewardsDTO newUR2 = new NewUsersRewardsDTO( 5, 2L);
         String newUserRewardAsJSON = this.mapper.writeValueAsString(newUR2);
         RequestBuilder req2 = MockMvcRequestBuilders
                 .post("/users_rewards")
@@ -90,7 +90,7 @@ public class UsersRewardsControllerIntegrationTest {
     /* test that available number decreases by 1 */
     @Test
     void testAvailableNumberDecreasesBy1() throws Exception {
-        NewUsersRewardsDTO newUR = new NewUsersRewardsDTO( 4, 2);
+        NewUsersRewardsDTO newUR = new NewUsersRewardsDTO( 4, 2L);
         String newRewardAsJSON = this.mapper.writeValueAsString(newUR);
         RequestBuilder req = MockMvcRequestBuilders
                 .post("/users_rewards")
@@ -112,7 +112,7 @@ public class UsersRewardsControllerIntegrationTest {
         RequestBuilder req = MockMvcRequestBuilders.get("/users_rewards/4");
 
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
-        UsersRewardsDTO found = new UsersRewardsDTO(4, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, false, 4, 1);
+        UsersRewardsDTO found = new UsersRewardsDTO(4, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, false, 4, 1L);
         found.setRewardName("Free Car");
         String foundAsJSON = this.mapper.writeValueAsString(found);
         ResultMatcher checkBody = MockMvcResultMatchers.content().json(foundAsJSON);
@@ -132,7 +132,7 @@ public class UsersRewardsControllerIntegrationTest {
         RequestBuilder req = MockMvcRequestBuilders.get("/users_rewards/user/2");
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
 
-        UsersRewardsDTO found = new UsersRewardsDTO(5, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, false, 1, 2);
+        UsersRewardsDTO found = new UsersRewardsDTO(5, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, false, 1, 2L);
         found.setRewardName("Free Cake");
         List<UsersRewardsDTO> foundList = List.of(found);
         String foundAsJSON = this.mapper.writeValueAsString(foundList);

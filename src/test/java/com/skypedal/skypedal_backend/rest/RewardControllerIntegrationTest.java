@@ -24,7 +24,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc // creates the mockmvc object
+@AutoConfigureMockMvc(addFilters = false) // creates the mockmvc object
 @Sql(scripts = {"classpath:test/test-schema.sql", "classpath:test/test-data.sql"},
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @ActiveProfiles("test")
@@ -61,7 +61,7 @@ public class RewardControllerIntegrationTest {
         RequestBuilder req = MockMvcRequestBuilders.get("/rewards/4");
 
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
-        UsersRewardsDTO newUR = new UsersRewardsDTO(4, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, false, 4, 1);
+        UsersRewardsDTO newUR = new UsersRewardsDTO(4, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, false, 4, 1L);
         newUR.setRewardName("Free Car");
         List<UsersRewardsDTO> usersRewardsDTOList = List.of(newUR);
 
@@ -104,7 +104,7 @@ public class RewardControllerIntegrationTest {
                 .param("active", "true");
 
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
-        UsersRewardsDTO newUR = new UsersRewardsDTO(3, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, false, 3, 1);
+        UsersRewardsDTO newUR = new UsersRewardsDTO(3, Constants.DATE_REDEEMED, Constants.DATE_EXPIRY, false, 3, 1L);
         newUR.setRewardName("Free Brownie");
         List<UsersRewardsDTO> usersRewardsDTOS = List.of(newUR);
 

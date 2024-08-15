@@ -7,6 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RouteRepo extends JpaRepository<Route, Integer> {
-    List<Route> findByUserId(Integer userId);
+    List<Route> findByUserId(Long userId);
     Optional<Route> findByStartIdAndEndId(Integer startId, Integer EndId);
 }

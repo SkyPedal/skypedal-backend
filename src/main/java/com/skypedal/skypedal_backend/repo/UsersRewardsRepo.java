@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface UsersRewardsRepo extends JpaRepository<UsersRewards, Integer> {
 
-    List<UsersRewards> findAllByUserId (int userId);
+    List<UsersRewards> findAllByUserId (Long userId);
 }

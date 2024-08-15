@@ -25,32 +25,32 @@ public class LocationService {
         this.mapsAPIService = mapsAPIService;
     }
 
-    public LocationDTO add(LocationDTO locationDTO, Integer userId) {
+    public LocationDTO add(LocationDTO locationDTO, Long userId) {
         User user = userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         Location location = this.repo.save(new Location(locationDTO, user));
         return new LocationDTO(location);
     }
 
-    public List<LocationDTO> query(String query, Integer userId) {
+    public List<LocationDTO> query(String query, Long userId) {
         userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         return this.mapsAPIService.fetchLocations(query).block();
 
     }
 
-    public List<LocationDTO> get(Integer userId) {
+    public List<LocationDTO> get(Long userId) {
         User user = this.userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         List<Location> locations = this.repo.findAllByUserId(user.getId());
         return locations.stream().map(LocationDTO::new).toList();
     }
 
-    public LocationDTO getById(Integer routeId, Integer userId) {
+    public LocationDTO getById(Integer routeId, Long userId) {
         User user = this.userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         Location route = this.repo.findById(routeId).orElseThrow(LocationNotFoundException::new);
         if (route.getUser() != user) throw new UnauthenticatedUserException(); //TODO: Or is admin
         return new LocationDTO(route);
     }
 
-    public LocationDTO removeById(Integer routeId, Integer userId) {
+    public LocationDTO removeById(Integer routeId, Long userId) {
         User user = this.userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         Location route = this.repo.findById(routeId).orElseThrow(LocationNotFoundException::new);
         if (route.getUser() != user) throw new UnauthenticatedUserException(); //TODO: Or is admin

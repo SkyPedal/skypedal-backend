@@ -29,7 +29,7 @@ public class RouteService {
         this.mapsAPIService = mapsAPIService;
     }
 
-    private Route createRoute(Integer startId, Integer endId, Integer userId) {
+    private Route createRoute(Integer startId, Integer endId, Long userId) {
         System.out.println("Creating route "+startId+"->"+endId+" (user "+userId+")");
         User user = this.userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         Location startLocation =
@@ -42,26 +42,26 @@ public class RouteService {
        return this.repo.save(new Route(newRoute, startLocation, endLocation, user));
     }
 
-    public RouteDTO add(NewRouteDTO route, Integer userId) {
+    public RouteDTO add(NewRouteDTO route, Long userId) {
         // Call the maps API
         Route createdRoute = createRoute(route.getStartId(), route.getEndId(), userId);
         return new RouteDTO(createdRoute);
     }
 
-    public List<RouteDTO> get(Integer userId) {
+    public List<RouteDTO> get(Long userId) {
         User user = this.userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         List<Route> routes = this.repo.findByUserId(userId);
         return routes.stream().map(RouteDTO::new).toList();
     }
 
-    public RouteDTO getById(Integer routeId, Integer userId) {
+    public RouteDTO getById(Integer routeId, Long userId) {
         User user = this.userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         Route route = this.repo.findById(routeId).orElseThrow(RouteNotFoundException::new);
         if (route.getUser() != user) throw new UnauthenticatedUserException(); //TODO: Or is admin
         return new RouteDTO(route);
     }
 
-    public RouteDTO getByEnds(Integer startId, Integer endId, Integer userId) {
+    public RouteDTO getByEnds(Integer startId, Integer endId, Long userId) {
         User user = this.userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         Route route = this.repo.findByStartIdAndEndId(startId, endId).orElseGet(
                 () -> createRoute(startId, endId, userId)
@@ -70,7 +70,7 @@ public class RouteService {
         return new RouteDTO(route);
     }
 
-    public RouteDTO removeById(Integer routeId, Integer userId) {
+    public RouteDTO removeById(Integer routeId, Long userId) {
         User user = this.userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         Route route = this.repo.findById(routeId).orElseThrow(RouteNotFoundException::new);
         if (route.getUser() != user) throw new UnauthenticatedUserException(); //TODO: Or is admin

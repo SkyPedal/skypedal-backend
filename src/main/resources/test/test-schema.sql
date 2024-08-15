@@ -8,11 +8,12 @@ CREATE TABLE `users` (
     `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
     `email` VARCHAR(1024),
     `name` VARCHAR(1024),
-    --  `firstname` VARCHAR(1024),
-    --  `lastname` VARCHAR(1024),
+    `first_name` VARCHAR(1024),
+    `last_name` VARCHAR(1024),
     `password_hash` VARCHAR(1024),
+    `reward_points` INT,
     `profile_picture` VARCHAR(1024),
-    `office` VARCHAR(1024),
+    `office_location` VARCHAR(1024),
     `points_remaining` BIGINT
 );
 

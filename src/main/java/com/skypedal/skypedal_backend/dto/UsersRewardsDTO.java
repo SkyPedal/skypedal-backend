@@ -14,14 +14,14 @@ public class UsersRewardsDTO {
     private boolean hasUsed;
 
     private Integer rewardId;
-    private Integer userId;
+    private Long userId;
     private String rewardName;
 
     public UsersRewardsDTO() {
         super();
     }
 
-    public UsersRewardsDTO(Integer id, LocalDateTime dateRedeemed, LocalDateTime dateExpiry, boolean hasUsed, Integer rewardId, Integer userId) {
+    public UsersRewardsDTO(Integer id, LocalDateTime dateRedeemed, LocalDateTime dateExpiry, boolean hasUsed, Integer rewardId, Long userId) {
         this.id = id;
         this.dateRedeemed = dateRedeemed;
         this.dateExpiry = dateExpiry;
@@ -81,11 +81,11 @@ public class UsersRewardsDTO {
         this.rewardId = rewardId;
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
