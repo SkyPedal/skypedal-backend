@@ -1,9 +1,10 @@
 INSERT INTO `users` (`first_name`,`last_name`, `email`, `password_hash`, `office_location`,`reward_points`)
-VALUES ('William', 'Moolman', 'email1', 'hash1', 'Livingston', 42),
-       ('Simonas', 'Burkovskis', 'email2', 'hash2', 'Livingston', 100),
-       ('Robert', 'Pettit', 'email3', 'hash3', 'Leeds', 33),
-       ('Vladimir', 'Volgin', 'email4', 'hash4', 'Leeds', 40),
-       ('Samuel', 'Elliott', 'email5', 'hash5', 'Brentwood', 55);
+VALUES
+    ('Will','Moolman','will@sky.uk','{bcrypt}$2a$10$JomNCELUGwttzHipaNpuXe.U9nRc2JollvVRRU.v/pbcxwodKlaQG','Livingston',42),
+    ('Simonas','Burkovskis','simonas@sky.uk','{bcrypt}$2a$10$JomNCELUGwttzHipaNpuXe.U9nRc2JollvVRRU.v/pbcxwodKlaQG','Livingston',42),
+    ('Robert','Pettit','robert@sky.uk','{bcrypt}$2a$10$JomNCELUGwttzHipaNpuXe.U9nRc2JollvVRRU.v/pbcxwodKlaQG','Leeds',42),
+    ('Vladimir','Volgin','vladimir@sky.uk','{bcrypt}$2a$10$JomNCELUGwttzHipaNpuXe.U9nRc2JollvVRRU.v/pbcxwodKlaQG','Leeds',42),
+    ('Samuel','Elliott','samuel@sky.uk','{bcrypt}$2a$10$JomNCELUGwttzHipaNpuXe.U9nRc2JollvVRRU.v/pbcxwodKlaQG','Brentwood',42);
 
 INSERT INTO `locations` (`name`,`lat`,`lng`,`user_id`)
 VALUES

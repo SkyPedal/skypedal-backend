@@ -20,6 +20,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -90,8 +91,12 @@ public class SecurityConfig {
     public SecurityFilterChain configure(final HttpSecurity http) throws Exception {
         return http.cors(withDefaults())
                 .csrf((csrf) -> csrf.disable())
+                .headers(headers -> headers
+                    .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin
+                    )
+                )
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/", "/authenticate", "/users/register").permitAll()
+                        .requestMatchers("/", "/authenticate", "/users/register", "/h2-console/**").permitAll()
                         .anyRequest().hasAuthority(UserRoles.ROLE_USER))
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)

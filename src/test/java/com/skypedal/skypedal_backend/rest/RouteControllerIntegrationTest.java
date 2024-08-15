@@ -1,17 +1,20 @@
 package com.skypedal.skypedal_backend.rest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skypedal.skypedal_backend.dto.NewRouteDTO;
 import com.skypedal.skypedal_backend.dto.RouteDTO;
+import com.skypedal.skypedal_backend.dto.UserDTO;
+import com.skypedal.skypedal_backend.utils.AuthenticationRequest;
+import com.skypedal.skypedal_backend.utils.AuthenticationResponse;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.web.client.RequestMatcher;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -19,28 +22,60 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.skypedal.skypedal_backend.test.Constants;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
 @SpringBootTest(webEnvironment =  SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc(addFilters = false)
+@AutoConfigureMockMvc
 @Sql(scripts = {"classpath:/test/test-schema.sql", "classpath:test/test-data.sql"},
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @ActiveProfiles("test")
 public class RouteControllerIntegrationTest {
     @Autowired
+    private WebApplicationContext context;
+
+    @Autowired
     private MockMvc mvc;
+
+    private String token1;
+    private String token2;
 
     @Autowired
     private ObjectMapper mapper;
 
+    @BeforeEach
+    void login() throws Exception {
+        String response = this.mvc.perform(
+                MockMvcRequestBuilders
+                        .post("/authenticate")
+                        .content("{\"login\":\"will@sky.uk\",\"password\":\"password\"}")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andReturn().getResponse().getContentAsString();
+
+        AuthenticationResponse authenticationResponse = this.mapper.readValue(response, AuthenticationResponse.class);
+        this.token1 = authenticationResponse.getAccessToken();
+
+        String response2 = this.mvc.perform(
+                MockMvcRequestBuilders
+                        .post("/authenticate")
+                        .content("{\"login\":\"Samel@sky.com\",\"password\":\"password\"}")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andReturn().getResponse().getContentAsString();
+
+        AuthenticationResponse authenticationResponse2 = this.mapper.readValue(response2, AuthenticationResponse.class);
+        this.token2 = authenticationResponse2.getAccessToken();
+    }
+
     @Test
     void testCreate() throws Exception {
+        System.out.println("!!!" + SecurityContextHolder.getContext().getAuthentication());
         NewRouteDTO newRoute = new NewRouteDTO(1,2);
         String newRouteAsJSON = this.mapper.writeValueAsString(newRoute);
         RequestBuilder req = MockMvcRequestBuilders
-                .post("/routes?userId=1")
+                .post("/routes")
                 .content(newRouteAsJSON)
+                .header("Authorization","Bearer "+this.token1)
                 .contentType(MediaType.APPLICATION_JSON);
 
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isCreated();
@@ -55,6 +90,7 @@ public class RouteControllerIntegrationTest {
     void testGet() throws Exception {
         RequestBuilder req = MockMvcRequestBuilders
                 .get("/routes?userId=1")
+                .header("Authorization","Bearer "+this.token1)
                 .contentType(MediaType.APPLICATION_JSON);
 
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
@@ -70,7 +106,8 @@ public class RouteControllerIntegrationTest {
     @Test
     void testGetOtherUser() throws Exception {
         RequestBuilder req = MockMvcRequestBuilders
-                .get("/routes?userId=2")
+                .get("/routes")
+                .header("Authorization","Bearer "+this.token2)
                 .contentType(MediaType.APPLICATION_JSON);
 
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
@@ -87,6 +124,7 @@ public class RouteControllerIntegrationTest {
     void testGetById() throws Exception {
         RequestBuilder req = MockMvcRequestBuilders
                 .get("/routes/1?userId=1")
+                .header("Authorization","Bearer "+this.token1)
                 .contentType(MediaType.APPLICATION_JSON);
 
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
@@ -102,6 +140,7 @@ public class RouteControllerIntegrationTest {
     void testGetByEnds() throws Exception {
         RequestBuilder req = MockMvcRequestBuilders
                 .get("/routes/start/1/end/2?userId=1")
+                .header("Authorization","Bearer "+this.token1)
                 .contentType(MediaType.APPLICATION_JSON);
 
         ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
