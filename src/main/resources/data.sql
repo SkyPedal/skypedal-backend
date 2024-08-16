@@ -18,10 +18,10 @@ VALUES
 
 INSERT INTO `rewards` (`name`,`description`,`point_cost`,`number_available`, `image_link`, `active`)
 VALUES
-('Free Cake', '1 delicious free cake of your choosing!', 10, 10, '34552345-23452345-23452345.jpg', TRUE),
-('Free Coffee', '1 delicious free coffee of your choosing!', 20, 25, '34552345-23452345-23452345.jpg', TRUE),
-('Free Cookie', '1 delicious free cookie of your choosing!', 15, 50, '34552345-23452345-23452345.jpg', TRUE),
-('Free Cracker', '1 delicious free cracker of your choosing!', 1, 1, '34552345-23452345-23452345.jpg', TRUE);
+('Free Cake', '1 delicious slice of cake of your choosing!', 10, 10, 'https://images.pexels.com/photos/1854652/pexels-photo-1854652.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', TRUE),
+('Free Coffee', '1 delicious free coffee of your choosing!', 20, 25, 'https://images.pexels.com/photos/302896/pexels-photo-302896.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', TRUE),
+('Free Cookie', '1 delicious free cookie of your choosing!', 15, 50, 'https://images.pexels.com/photos/1848973/pexels-photo-1848973.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', TRUE),
+('Free Cannoli', '1 delicious free cannoli of your choosing!', 1, 1, 'https://images.pexels.com/photos/8175081/pexels-photo-8175081.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', TRUE);
 
 INSERT INTO `users_rewards` (`reward_id`,`user_id`,`date_redeemed`,`date_expiry`,`has_used`)
 VALUES
