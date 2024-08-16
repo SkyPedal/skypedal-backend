@@ -21,7 +21,7 @@ public class ActivityService {
         this.userRepo = userRepo;
     }
 
-    public ActivityDTO add(ActivityDTO activityDTO, Integer userId) {
+    public ActivityDTO add(ActivityDTO activityDTO, Long userId) {
         User user = userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         Activity activity = this.repo.save(new Activity(activityDTO, user));
         return new ActivityDTO(activity);
@@ -31,7 +31,7 @@ public class ActivityService {
         return this.repo.findAll().stream().map(ActivityDTO::new).toList();
     }
 
-    public List<Activity> getUsersActivities(Integer userId) {
+    public List<Activity> getUsersActivities(Long userId) {
         User user = userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         return this.repo.findByUser(user);
     }

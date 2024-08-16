@@ -22,7 +22,7 @@ public class ActivityController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/addActivity")
-    public ActivityDTO add(@RequestBody ActivityDTO activityDTO, @RequestParam(required = true) Integer userId) {
+    public ActivityDTO add(@RequestBody ActivityDTO activityDTO, @RequestParam(required = true) Long userId) {
         return this.service.add(activityDTO, userId);
     }
 
@@ -34,7 +34,7 @@ public class ActivityController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/getUserActivities")
-    public List<Activity> getUserActivities(@RequestParam(required = true) Integer userId){
+    public List<Activity> getUserActivities(@RequestParam(required = true) Long userId){
         return this.service.getUsersActivities(userId);
     }
 
