@@ -1,6 +1,7 @@
 package com.skypedal.skypedal_backend.entities;
 
 import com.skypedal.skypedal_backend.dto.ActivityDTO;
+import com.skypedal.skypedal_backend.dto.NewActivityDTO;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public class Activity {
     private Integer id;
 
     private String date;
-//    private JSON gps; placeholder
+    private String geoJson;
     private String activity_time;
     private int distance;
     private String type;
@@ -40,7 +41,27 @@ public class Activity {
         this.points_earned = activityDTO.getPoints_earned();
     }
 
+    public Activity(NewActivityDTO activityDTO, User user) {
+        this.user = user;
+        this.date = activityDTO.getDate();
+        int minutes = activityDTO.getDuration()/60;
+        this.activity_time = minutes+"mins";
+        this.distance = activityDTO.getDistance();
+        this.type = "Cycling";
+        this.co2_saving = (210 * activityDTO.getDistance())/1000;
+        this.cost_saving = (35 * activityDTO.getDistance())/1000;
+        this.points_earned = (activityDTO.getDistance() + activityDTO.getDuration()) / 40;
+    }
+
     public int getId() {return id;}
+
+    public String getGeoJson() {
+        return geoJson;
+    }
+
+    public void setGeoJson(String geoJson) {
+        this.geoJson = geoJson;
+    }
 
     public String getDate() {return date;}
 

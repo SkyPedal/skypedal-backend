@@ -35,3 +35,23 @@ VALUES
 (1, 4, '2024-07-12T12:00', '2024-07-24T12:00', FALSE),
 (1, 4, '2024-07-12T12:00', '2024-07-24T12:00', TRUE),
 (2, 4, '2024-07-12T12:00', '2024-07-24T12:00', FALSE);
+
+INSERT INTO `activities` (`date`, geo_json, activity_time, distance, type, user_id, co2_saving, cost_saving, points_earned)
+VALUES
+    ('today', '["coordinates"]', '40min', 3100, 'cycling', 1, 543,  430, 1000),
+    ('today', '["coordinates"]', '1h', 4300, 'cycling', 2, 3,  1000, 4000),
+    ('today', '["coordinates"]', '20min', 5000, 'running', 2, 600,  230, 1000),
+    ('today', '["coordinates"]', '35min', 2300, 'walking', 2, 300,  110, 1000);
+
+--    private String date;
+--    private String geoJson;
+--    private String activity_time;
+--    private int distance;
+--    private String type;
+--    @ManyToOne
+--    private User user;
+--    private List<Integer> joined_friends;
+--    private int co2_saving;
+--    private int cost_saving;
+--    private int points_earned;
+--
