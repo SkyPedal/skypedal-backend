@@ -1,6 +1,7 @@
 package com.skypedal.skypedal_backend.services;
 
 import com.skypedal.skypedal_backend.dto.ActivityDTO;
+import com.skypedal.skypedal_backend.dto.NewActivityDTO;
 import com.skypedal.skypedal_backend.entities.Activity;
 import com.skypedal.skypedal_backend.entities.User;
 import com.skypedal.skypedal_backend.exceptions.ActivityNotFoundException;
@@ -21,7 +22,7 @@ public class ActivityService {
         this.userRepo = userRepo;
     }
 
-    public ActivityDTO add(ActivityDTO activityDTO, Integer userId) {
+    public ActivityDTO add(NewActivityDTO activityDTO, Long userId) {
         User user = userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         Activity activity = this.repo.save(new Activity(activityDTO, user));
         return new ActivityDTO(activity);
@@ -31,13 +32,13 @@ public class ActivityService {
         return this.repo.findAll().stream().map(ActivityDTO::new).toList();
     }
 
-    public List<Activity> getUsersActivities(Integer userId) {
+    public List<ActivityDTO> getUsersActivities(Long userId) {
         User user = userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
-        return this.repo.findByUser(user);
+        return this.repo.findByUser(user).stream().map(ActivityDTO::new).toList();
     }
 
-    public Activity getById(Integer id){
-        return this.repo.findById(id).orElseThrow(ActivityNotFoundException::new);
+    public ActivityDTO getById(Integer id){
+        return new ActivityDTO(this.repo.findById(id).orElseThrow(ActivityNotFoundException::new));
     }
 
     public Activity updateActivity(ActivityDTO activityDTO, Integer id){
