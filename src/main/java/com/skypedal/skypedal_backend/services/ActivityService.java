@@ -25,6 +25,8 @@ public class ActivityService {
     public ActivityDTO add(NewActivityDTO activityDTO, Long userId) {
         User user = userRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         Activity activity = this.repo.save(new Activity(activityDTO, user));
+        user.setRewardPoints(user.getRewardPoints() + activity.getPoints_earned());
+        userRepo.save(user);
         return new ActivityDTO(activity);
     }
 
